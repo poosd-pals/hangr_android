@@ -1,27 +1,34 @@
 package com.cop4331.group7.hangr
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
+import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import hideKeyboard
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        FirebaseApp.initializeApp(this)
-        mAuth = FirebaseAuth.getInstance()
+        // Hide keyboard when anywhere outside a textfield or button is clicked
+        linearLayout.setOnClickListener { it.hideKeyboard() }
+
+        button_login.setOnClickListener { attemptLogin() }
+        button_register.setOnClickListener { moveToRegisterActivity() }
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun attemptLogin() {
+        // TODO: validate fields and attempt login
+        Toast.makeText(this, "Login time!", Toast.LENGTH_LONG).show()
+    }
 
-        if (mAuth.currentUser != null) {
-            // TODO: create intent with user data, pass to new activity for logged in area
-        }
-
+    private fun moveToRegisterActivity() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
 }
+

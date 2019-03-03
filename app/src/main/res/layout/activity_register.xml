@@ -4,21 +4,21 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:padding="@dimen/activity_horizontal_margin"
-              tools:context=".LoginActivity"
+              tools:context=".RegisterActivity"
               android:orientation="vertical" android:id="@+id/linearLayout">
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:orientation="vertical">
+            android:orientation="vertical" android:id="@+id/layout">
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/welcome"
+                android:text="@string/register"
                 android:textSize="30sp"
                 android:textColor="#333333"/>
 
@@ -32,16 +32,30 @@
             android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/usernameWrapper"
+                android:id="@+id/wrapper_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/field_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/username"
+                    android:hint="@string/prompt_email"
+                    tools:ignore="Autofill"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/wrapper_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <EditText
+                    android:id="@+id/field_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="@string/name"
                     tools:ignore="Autofill"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +65,7 @@
                 android:layout_height="wrap_content">
 
             <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/field_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -60,15 +74,16 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-                android:id="@+id/button_login"
+                android:id="@+id/button_register"
                 android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/log_in"/>
+                android:text="@string/register"/>
         <Button
-                android:text="@string/don_t_have_an_account"
+                android:text="@string/already_have_an_account"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button_register"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/button_login"/>
 
     </LinearLayout>
 
