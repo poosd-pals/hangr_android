@@ -17,16 +17,28 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
+                android:name=".CreateOutfitActivity"
+                android:label="@string/title_activity_create_outfit">
+        </activity>
+        <activity
+                android:name=".NewClothesActivity"
+                android:label="@string/title_activity_new_clothes">
+        </activity>
+        <activity
+                android:name=".ClosetGalleryActivity"
+                android:label="@string/title_activity_closet_gallery">
+        </activity>
+        <activity
                 android:name=".RegisterActivity"
                 android:label="@string/register"
                 android:parentActivityName=".LoginActivity">
-
         </activity>
         <activity
                 android:name=".LoginActivity"
                 android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
