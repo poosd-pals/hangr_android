@@ -69,6 +69,12 @@
                 android:text="@string/don_t_have_an_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/button_register"/>
+			  <!-- TODO: Temporary to bypass login screen -->
+        <Button
+								android:id="@+id/button_bypass"
+								android:text="Bypass Login"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

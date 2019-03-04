@@ -18,6 +18,9 @@ class LoginActivity : AppCompatActivity() {
 
         button_login.setOnClickListener { attemptLogin() }
         button_register.setOnClickListener { moveToRegisterActivity() }
+
+        // TODO: Temporary to bypass login screen
+        button_bypass.setOnClickListener { moveToClosetGallery() }
     }
 
     private fun attemptLogin() {
@@ -27,6 +30,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun moveToRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
+    }
+
+    // TODO: Temporary to bypass login screen
+    private fun moveToClosetGallery() {
+        val intent = Intent(this, ClosetGalleryActivity::class.java)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
     }
