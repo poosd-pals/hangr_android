@@ -33,9 +33,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_closet_gallery)
 
-        // get navigation view and set current item to checked
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.menu.getItem(1).isChecked = true
+        navigation.menu.getItem(0).isChecked = true
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
