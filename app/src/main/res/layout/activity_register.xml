@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                     android:id="@+id/field_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                     android:id="@+id/field_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,11 +60,11 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-                android:id="@+id/passwordWrapper"
+                android:id="@+id/wrapper_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <EditText
+            <android.support.design.widget.TextInputEditText
                     android:id="@+id/field_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -84,6 +84,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/button_login"/>
+
+        <ProgressBar
+                android:id="@+id/indeterminateBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle" android:visibility="invisible"/>
 
     </LinearLayout>
 

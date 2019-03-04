@@ -31,7 +31,8 @@
         <activity
                 android:name=".RegisterActivity"
                 android:label="@string/register"
-                android:parentActivityName=".LoginActivity">
+                android:parentActivityName=".LoginActivity"
+                android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
                 android:name=".LoginActivity"
