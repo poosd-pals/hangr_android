@@ -4,9 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
 class ClosetGalleryActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
 
     // go to activity when navigation button is pressed
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -33,10 +38,41 @@ class ClosetGalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_closet_gallery)
 
+        auth = FirebaseAuth.getInstance()
+
         // get navigation view and set current item to checked
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
         bottomNavigationView.menu.getItem(1).isChecked = true
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.actionbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionbar_logout -> {
+                handleLogout()
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun handleLogout() {
+        auth.signOut()
+
+        val intent = Intent(this, LoginActivity::class.java)
+
+        // clear the backstack
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        startActivity(intent)
+        finish()
     }
 }

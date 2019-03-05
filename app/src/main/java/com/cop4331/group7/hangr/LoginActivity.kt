@@ -37,8 +37,13 @@ class LoginActivity : AppCompatActivity() {
     // TODO: Temporary to bypass login screen
     private fun moveToClosetGallery() {
         val intent = Intent(this, ClosetGalleryActivity::class.java)
+
+        // clear the backstack
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
         startActivity(intent)
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
+        finish()
     }
 }
 

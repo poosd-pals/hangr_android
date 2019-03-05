@@ -28,4 +28,5 @@
 	<string name="title_new_clothes">Add Clothes</string>
 	<string name="title_closet">Closet</string>
 	<string name="title_outfits">Outfits</string>
+    <string name="logout">Logout</string>
 </resources>
