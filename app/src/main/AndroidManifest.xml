@@ -30,13 +30,13 @@
         </activity>
         <activity
                 android:name=".RegisterActivity"
-                android:label="@string/register"
+                android:label="@string/hangr"
                 android:parentActivityName=".LoginActivity"
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
                 android:name=".LoginActivity"
-                android:label="@string/title_activity_login">
+                android:label="@string/hangr">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
