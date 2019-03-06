@@ -21,6 +21,10 @@ class EditClothing : AppCompatActivity() {
             if (!sourceActivity.equals("ClosetGalleryActivity")) {
                 button_delete.isClickable = false
                 button_delete.visibility = View.INVISIBLE
+                button_cancel.setOnClickListener { moveBackToNewClothesActivity() }
+            }
+            else {
+                button_cancel.setOnClickListener { moveToClosetGalleryActivity() }
             }
         }
 
@@ -29,13 +33,17 @@ class EditClothing : AppCompatActivity() {
         // TODO: allow user to edit fields or add tags
 
         // TODO: update DB with new information
-
-        // return to gallery
-        button_cancel.setOnClickListener { moveToClosetGalleryActivity() }
     }
 
     private fun moveToClosetGalleryActivity() {
         intent = Intent(this, ClosetGalleryActivity::class.java)
         startActivity(intent)
+        finish()
+    }
+
+    private fun moveBackToNewClothesActivity() {
+        intent = Intent(this, NewClothesActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
