@@ -16,6 +16,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".EditClothing">
+        </activity>
         <activity
                 android:name=".CreateOutfitActivity"
                 android:label="@string/title_activity_create_outfit">

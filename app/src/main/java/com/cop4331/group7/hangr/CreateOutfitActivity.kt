@@ -32,11 +32,9 @@ class CreateOutfitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_outfit)
-        var title = findViewById<TextView>(R.id.text_outfit)
-        title.setText("New Outfit Activity")
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
-        bottomNavigationView.menu.getItem(2).isChecked = true
+        text_outfit.text = "New Outfit Activity"
+        navigation.menu.getItem(2).isChecked = true
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
