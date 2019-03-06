@@ -37,11 +37,11 @@
                 android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
-                    android:id="@+id/username"
+                    android:id="@+id/field_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:hint="@string/username"
+                    android:hint="@string/prompt_email"
                     tools:ignore="Autofill"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
-                    android:id="@+id/password"
+                    android:id="@+id/field_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -72,9 +72,15 @@
 			  <!-- TODO: Temporary to bypass login screen -->
         <Button
 								android:id="@+id/button_bypass"
-								android:text="Bypass Login"
+								android:text="@string/bypass_login"
 								android:layout_width="match_parent"
 								android:layout_height="wrap_content"/>
+        <ProgressBar
+                android:id="@+id/indeterminateBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle" android:visibility="invisible"/>
 
     </LinearLayout>
 

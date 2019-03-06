@@ -1,5 +1,6 @@
 package com.cop4331.group7.hangr
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
@@ -104,18 +105,18 @@ class RegisterActivity : AppCompatActivity() {
                     // TODO?: Optional profile photo upload, add url to profile above
                     // .setPhotoUri(URI)
 
-                    auth.currentUser!!.updateProfile(profileUpdates).addOnCompleteListener {
-                        Toast.makeText(this, "Account created! You may now log in to your account", Toast.LENGTH_LONG).show()
-                        moveToLoginActivity()
-                    }
+                    auth.currentUser!!.updateProfile(profileUpdates).addOnCompleteListener { moveToLoginActivity() }
                 }
                 else {
                     // TODO: show error?
+                    Toast.makeText(this, it.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                 }
             }
     }
 
     private fun moveToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
     }

@@ -4,6 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,10 +15,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 import kotlinx.android.synthetic.main.gallery_img_view.view.*
 
 class ClosetGalleryActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -44,7 +50,9 @@ class ClosetGalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_closet_gallery)
 
-        // navigation
+        auth = FirebaseAuth.getInstance()
+      
+        // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -87,5 +95,34 @@ class ClosetGalleryActivity : AppCompatActivity() {
         }
 
         override fun getItemCount() = myDataset.size
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.actionbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionbar_logout -> {
+                handleLogout()
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun handleLogout() {
+        auth.signOut()
+
+        val intent = Intent(this, LoginActivity::class.java)
+
+        // clear the backstack
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        startActivity(intent)
+        finish()
     }
 }
