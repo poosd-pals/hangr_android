@@ -34,7 +34,14 @@ class NewClothesActivity : AppCompatActivity() {
 
         text_clothes.text = "New Clothes Activity"
         navigation.menu.getItem(0).isChecked = true
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        button_edit.setOnClickListener { moveToEditClothing() }
+    }
+
+    private fun moveToEditClothing() {
+        intent = Intent(this, EditClothing::class.java)
+        intent.putExtra(EXTRA_MESSAGE, "NewClothesActivity")
+        startActivity(intent)
     }
 }
