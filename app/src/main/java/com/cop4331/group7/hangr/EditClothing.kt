@@ -12,23 +12,22 @@ class EditClothing : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_clothing)
 
-        intent = this.intent
+        val intent = this.intent
 
-        // TODO: populate layout fields with info passed to this activity via intents
-        // TODO: if we came from NewClothes, hide delete button
-        if (intent != null) {
-            var sourceActivity = intent.extras.getString(EXTRA_MESSAGE)
-            if (!sourceActivity.equals("ClosetGalleryActivity")) {
+        if (intent != null && intent.hasExtra(EXTRA_MESSAGE)) {
+            val intentFromActivity = intent.extras.getString(EXTRA_MESSAGE)
+            // Can not "delete" when coming from NewClothes, cancel finishes intent
+            if (intentFromActivity.equals("NewClothesActivity")) {
                 button_delete.isClickable = false
                 button_delete.visibility = View.INVISIBLE
-                button_cancel.setOnClickListener { moveBackToNewClothesActivity() }
+                button_cancel.setOnClickListener { finish() }
             }
             else {
+                // TODO: populate existing values if editing existing item from closet
+
                 button_cancel.setOnClickListener { moveToClosetGalleryActivity() }
             }
         }
-
-
 
         // TODO: allow user to edit fields or add tags
 
@@ -37,12 +36,6 @@ class EditClothing : AppCompatActivity() {
 
     private fun moveToClosetGalleryActivity() {
         intent = Intent(this, ClosetGalleryActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun moveBackToNewClothesActivity() {
-        intent = Intent(this, NewClothesActivity::class.java)
         startActivity(intent)
         finish()
     }
