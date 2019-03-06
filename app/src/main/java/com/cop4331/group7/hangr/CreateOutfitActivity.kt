@@ -37,5 +37,15 @@ class CreateOutfitActivity : AppCompatActivity() {
         navigation.menu.getItem(2).isChecked = true
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        button_add_clothes.setOnClickListener { moveToCloset() }
+    }
+
+    private fun moveToCloset() {
+        // TODO: popup asking to select a category
+
+        // move to closet
+        intent = Intent(this, ClosetGalleryActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, "AddItem to Outfit")
+        startActivity(intent)
     }
 }

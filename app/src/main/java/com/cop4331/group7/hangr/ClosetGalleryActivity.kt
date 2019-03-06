@@ -19,6 +19,8 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 import kotlinx.android.synthetic.main.gallery_img_view.view.*
 
+const val EXTRA_MESSAGE = "com.cop4331.group7.hangr.checkParent"
+
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
@@ -88,7 +90,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
             holder.button.setOnLongClickListener {
                 val intent = Intent(it.context, EditClothing::class.java)
                 // TODO: put info regarding the view selected so fields in activity_edit_clothing can be populated
-                // intent.putExtra()
+                intent.putExtra(EXTRA_MESSAGE, "ClosetGalleryActivity")
                 it.context.startActivity(intent)
                 true
             }
