@@ -1,11 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:background="#e3e3e3"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="@dimen/activity_horizontal_margin"
-              tools:context=".LoginActivity"
-              android:orientation="vertical" android:id="@+id/linearLayout">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="#e3e3e3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_horizontal_margin"
+        tools:context=".LoginActivity"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -71,10 +73,10 @@
                 android:layout_height="wrap_content" android:id="@+id/button_register"/>
 			  <!-- TODO: Temporary to bypass login screen -->
         <Button
-								android:id="@+id/button_bypass"
-								android:text="@string/bypass_login"
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"/>
+                android:id="@+id/button_bypass"
+				android:text="@string/bypass_login"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
         <ProgressBar
                 android:id="@+id/indeterminateBar"
                 android:layout_width="match_parent"
