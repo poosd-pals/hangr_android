@@ -32,4 +32,5 @@
     <string name="first_name">First Name</string>
     <string name="hangr">Hangr</string>
 	<string name="bypass_login">Bypass Login</string>
+    <string name="hampr">Hampr</string>
 </resources>

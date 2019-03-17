@@ -6,7 +6,7 @@
 				android:id="@+id/container"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				tools:context=".NewClothesActivity">
+				tools:context=".HamprActivity">
 
 	<TextView
 					android:id="@+id/text_clothes"

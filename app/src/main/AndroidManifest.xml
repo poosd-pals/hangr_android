@@ -16,14 +16,14 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EditClothing">
+        <activity android:name=".AddOrEditClothingActivity">
         </activity>
         <activity
                 android:name=".CreateOutfitActivity"
                 android:label="@string/title_activity_create_outfit">
         </activity>
         <activity
-                android:name=".NewClothesActivity"
+                android:name=".HamprActivity"
                 android:label="@string/title_activity_new_clothes">
         </activity>
         <activity

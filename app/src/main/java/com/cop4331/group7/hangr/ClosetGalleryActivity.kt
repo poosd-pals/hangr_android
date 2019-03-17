@@ -4,20 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
-import kotlinx.android.synthetic.main.gallery_img_view.view.*
 
 const val EXTRA_MESSAGE = "com.cop4331.group7.hangr.checkParent"
 
@@ -31,17 +24,18 @@ class ClosetGalleryActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_new_clothes -> {
-                val intent = Intent(this@ClosetGalleryActivity, NewClothesActivity::class.java)
+                val intent = Intent(this@ClosetGalleryActivity, HamprActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_gallery -> {
-
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_outfit -> {
                 val intent = Intent(this@ClosetGalleryActivity, CreateOutfitActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -53,6 +47,8 @@ class ClosetGalleryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_closet_gallery)
 
         auth = FirebaseAuth.getInstance()
+
+        fab_add_clothes.setOnClickListener { createNewClothingItem() }
       
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
@@ -60,7 +56,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
         // recycler view
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
-        viewAdapter = MyAdapter(arrayOf("images", "loaded", "from", "DB", "should", "go", "here"))
+        viewAdapter = GalleryAdapter(arrayOf("images", "loaded", "from", "DB", "should", "go", "here"))
 
         recycler_gallery.apply {
             layoutManager = viewManager
@@ -68,35 +64,9 @@ class ClosetGalleryActivity : AppCompatActivity() {
         }
     }
 
-    class MyAdapter(private val myDataset: Array<String>) :
-        RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
-
-        class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            var button : LinearLayout = itemView.layout_gallery
-            var placeHolder : TextView = itemView.text_placeholder
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAdapter.MyViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.gallery_img_view, parent, false)
-
-            return MyViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            // TODO: get image from DB
-            holder.placeHolder.text = myDataset[position]
-
-            holder.button.setOnLongClickListener {
-                val intent = Intent(it.context, EditClothing::class.java)
-                // TODO: put info regarding the view selected so fields in activity_edit_clothing can be populated
-                intent.putExtra(EXTRA_MESSAGE, "ClosetGalleryActivity")
-                it.context.startActivity(intent)
-                true
-            }
-        }
-
-        override fun getItemCount() = myDataset.size
+    private fun createNewClothingItem() {
+        val intent = Intent(this@ClosetGalleryActivity, AddOrEditClothingActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

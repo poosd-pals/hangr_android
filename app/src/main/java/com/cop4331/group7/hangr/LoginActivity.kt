@@ -32,8 +32,16 @@ class LoginActivity : AppCompatActivity() {
         button_login.setOnClickListener { attemptLogin() }
         button_register.setOnClickListener { moveToRegisterActivity() }
 
-        // TODO: Temporary to bypass login screen
-        button_bypass.setOnClickListener { moveToClosetGallery() }
+        // MARK: Temporary to bypass login screen
+        button_bypass.setOnClickListener { loginToDummyAccount() }
+    }
+
+    private fun loginToDummyAccount() {
+        auth.signInWithEmailAndPassword("admin@admin.com", "password1")
+            .addOnCompleteListener {
+                if (it.isSuccessful) { moveToClosetGallery() }
+                else { handleLoginFailure(it) }
+            }
     }
 
     private fun attemptLogin() {
@@ -111,7 +119,6 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    // TODO: Temporary to bypass login screen
     private fun moveToClosetGallery() {
         val intent = Intent(this, ClosetGalleryActivity::class.java)
         startActivity(intent)

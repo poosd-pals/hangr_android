@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_create_outfit.*
 
 class CreateOutfitActivity : AppCompatActivity() {
@@ -13,13 +12,15 @@ class CreateOutfitActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_new_clothes -> {
-                val intent = Intent(this@CreateOutfitActivity, NewClothesActivity::class.java)
+                val intent = Intent(this@CreateOutfitActivity, HamprActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_gallery -> {
                 val intent = Intent(this@CreateOutfitActivity, ClosetGalleryActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_outfit -> {

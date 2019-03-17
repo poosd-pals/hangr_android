@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".EditClothing">
+    tools:context=".AddOrEditClothingActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constrained_view"
@@ -49,48 +49,48 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <android.support.design.chip.ChipGroup
-            android:id="@+id/chip_colors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/text_colors">
+        <!--<android.support.design.chip.ChipGroup-->
+            <!--android:id="@+id/chip_colors"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/text_colors">-->
 
-            <android.support.design.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="color1"/>
+            <!--<android.support.design.chip.Chip-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="color1"/>-->
 
-            <android.support.design.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="color2"/>
+            <!--<android.support.design.chip.Chip-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="color2"/>-->
 
-        </android.support.design.chip.ChipGroup>
+        <!--</android.support.design.chip.ChipGroup>-->
 
         <TextView
             android:id="@+id/text_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tags:"
-            app:layout_constraintTop_toBottomOf="@id/chip_colors"
+            app:layout_constraintTop_toBottomOf="@id/text_colors"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <android.support.design.chip.ChipGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/text_tags">
+        <!--<android.support.design.chip.ChipGroup-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/text_tags">-->
 
-            <android.support.design.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="tag1"/>
+            <!--<android.support.design.chip.Chip-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="tag1"/>-->
 
-            <android.support.design.chip.Chip
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="tag2"/>
+            <!--<android.support.design.chip.Chip-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="tag2"/>-->
 
-        </android.support.design.chip.ChipGroup>
+        <!--</android.support.design.chip.ChipGroup>-->
 
     </android.support.constraint.ConstraintLayout>
 

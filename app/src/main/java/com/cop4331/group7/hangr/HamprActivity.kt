@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_new_clothes.*
+import kotlinx.android.synthetic.main.activity_hampr.*
 
-class NewClothesActivity : AppCompatActivity() {
+class HamprActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -15,13 +14,15 @@ class NewClothesActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_gallery -> {
-                val intent = Intent(this@NewClothesActivity, ClosetGalleryActivity::class.java)
+                val intent = Intent(this@HamprActivity, ClosetGalleryActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_outfit -> {
-                val intent = Intent(this@NewClothesActivity, CreateOutfitActivity::class.java)
+                val intent = Intent(this@HamprActivity, CreateOutfitActivity::class.java)
                 startActivity(intent)
+                finish()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -30,9 +31,9 @@ class NewClothesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_clothes)
+        setContentView(R.layout.activity_hampr)
 
-        text_clothes.text = "New Clothes Activity"
+        text_clothes.text = "Hampr Activity"
         navigation.menu.getItem(0).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -40,8 +41,8 @@ class NewClothesActivity : AppCompatActivity() {
     }
 
     private fun moveToEditClothing() {
-        intent = Intent(this, EditClothing::class.java)
-        intent.putExtra(EXTRA_MESSAGE, "NewClothesActivity")
+        intent = Intent(this, AddOrEditClothingActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, "HamprActivity")
         startActivity(intent)
     }
 }
