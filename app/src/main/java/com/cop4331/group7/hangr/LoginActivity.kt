@@ -116,7 +116,6 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-        finish()
     }
 
     private fun moveToClosetGallery() {
