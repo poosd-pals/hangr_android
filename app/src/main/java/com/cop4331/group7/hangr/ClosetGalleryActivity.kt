@@ -9,15 +9,21 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.cop4331.group7.hangr.classes.FirebaseClothingItem
+import com.cop4331.group7.hangr.classes.GalleryAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
-const val EXTRA_MESSAGE = "com.cop4331.group7.hangr.checkParent"
+const val EXISTING_CLOTHING_ITEM_DATA = "com.cop4331.group7.hangr.existing_clothing_data"
+const val EXISTING_CLOTHING_ITEM_PARENT_ID = "com.cop4331.group7.hangr.existing_clothing_parent_id"
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: GalleryAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     // go to activity when navigation button is pressed
@@ -49,28 +55,26 @@ class ClosetGalleryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_closet_gallery)
 
         auth = FirebaseAuth.getInstance()
-
-        fab_add_clothes.setOnClickListener { createNewClothingItem() }
+        db = FirebaseFirestore.getInstance()
 
         title = "Welcome, " + auth.currentUser!!.displayName + "!"
+        fab_add_clothes.setOnClickListener { createNewClothingItem() }
 
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        // recycler view
-        viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
-        viewAdapter = GalleryAdapter(arrayOf("images", "loaded", "from", "DB", "should", "go", "here"))
-
-        recycler_gallery.apply {
-            layoutManager = viewManager
-            adapter = viewAdapter
-        }
+        setupRecyclerView()
     }
 
-    private fun createNewClothingItem() {
-        val intent = Intent(this@ClosetGalleryActivity, AddOrEditClothingActivity::class.java)
-        startActivity(intent)
+    override fun onStart() {
+        super.onStart()
+        viewAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewAdapter.stopListening()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -85,19 +89,35 @@ class ClosetGalleryActivity : AppCompatActivity() {
                 handleLogout()
                 return true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupRecyclerView() {
+        viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
+
+        val query = db.collection(auth.currentUser!!.uid)
+        val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+            .setQuery(query, FirebaseClothingItem::class.java)
+            .build()
+
+        viewAdapter = GalleryAdapter(response)
+
+        recycler_gallery.apply {
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+    }
+
+    private fun createNewClothingItem() {
+        val intent = Intent(this@ClosetGalleryActivity, AddOrEditClothingActivity::class.java)
+        startActivity(intent)
     }
 
     private fun handleLogout() {
         auth.signOut()
 
         val intent = Intent(this, LoginActivity::class.java)
-
-        // clear the backstack
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-
         startActivity(intent)
         finish()
     }
