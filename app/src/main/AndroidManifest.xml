@@ -16,7 +16,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AddOrEditClothingActivity">
+        <activity
+            android:name=".AddOrEditClothingActivity"
+            android:parentActivityName=".ClosetGalleryActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
                 android:name=".CreateOutfitActivity"

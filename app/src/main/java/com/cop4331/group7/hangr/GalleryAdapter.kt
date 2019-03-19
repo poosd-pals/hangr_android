@@ -31,7 +31,7 @@ class GalleryAdapter(private val myDataset: Array<String>) :
         holder.button.setOnLongClickListener {
             val intent = Intent(it.context, AddOrEditClothingActivity::class.java)
             // TODO: put info regarding the view selected so fields in activity_add_or_edit_clothing can be populated
-            intent.putExtra(EXTRA_MESSAGE, "ClosetGalleryActivity")
+            intent.putExtra(EXTRA_MESSAGE, "Edit")
             it.context.startActivity(intent)
             true
         }

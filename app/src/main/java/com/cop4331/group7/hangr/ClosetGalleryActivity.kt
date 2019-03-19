@@ -70,6 +70,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
     private fun createNewClothingItem() {
         val intent = Intent(this@ClosetGalleryActivity, AddOrEditClothingActivity::class.java)
+        intent.putExtra(EXTRA_MESSAGE, "Add")
         startActivity(intent)
     }
 
