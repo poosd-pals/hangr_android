@@ -1,185 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AddOrEditClothingActivity">
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constrained_view"
+<android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".AddOrEditClothingActivity">
 
-        <ImageView
-            android:id="@+id/image_editing_clothing"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteY="0dp"
-            tools:srcCompat="@tools:sample/avatars" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constrained_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <ImageView
+                android:id="@+id/image_view_clothing_picture"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@android:drawable/ic_menu_add"
+                tools:layout_editor_absoluteY="0dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/image_view_clothing_picture" android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp">
+
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                            android:id="@+id/edit_clothing_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                            android:id="@+id/edit_clothing_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Category"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/image_editing_clothing"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_clothing_name"
+                    android:id="@+id/edit_clothing_wears"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name"/>
+                    android:gravity="top|left"
+                    android:inputType="number"
+                    android:hint="Wears Before Wash" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_category"
+                android:id="@+id/input_layout_colors"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/edit_clothing_category"
+                    android:id="@+id/edit_clothing_colors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Category"/>
+                    android:minLines="4"
+                    android:gravity="top|left"
+                    android:scrollbars="vertical"
+                    android:hint="Colors" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <!--<android.support.design.chip.ChipGroup-->
+                <!--android:id="@+id/chip_colors"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/text_colors">-->
+
+                <!--<android.support.design.chip.Chip-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="color1"/>-->
+
+                <!--<android.support.design.chip.Chip-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="color2"/>-->
+
+            <!--</android.support.design.chip.ChipGroup>-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="150dp"
+                android:gravity="top"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edit_clothing_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="4"
+                    android:gravity="top|left"
+                    android:scrollbars="vertical"
+                    android:hint="Tags"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--<android.support.design.chip.ChipGroup-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/text_tags">-->
+
+                <!--<android.support.design.chip.Chip-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="tag1"/>-->
+
+                <!--<android.support.design.chip.Chip-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="tag2"/>-->
+
+            <!--</android.support.design.chip.ChipGroup>-->
 
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <android.support.design.widget.TextInputLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
 
-            <EditText
-                android:id="@+id/edit_clothing_wears"
-                android:layout_width="match_parent"
+            <ProgressBar
+                    android:id="@+id/progress_circular"
+                    style="@android:style/Widget.DeviceDefault.ProgressBar"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:indeterminate="true"
+                    android:indeterminateBehavior="cycle" android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    android:layout_marginTop="48dp" app:layout_constraintTop_toTopOf="parent"/>
+
+            <ProgressBar
+                    android:id="@+id/progress_horizontal"
+                    style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:indeterminate="false"
+                    android:progress="0"
+                    android:max="100"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:inputType="number"
-                android:hint="Wears Before Wash" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/delete" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_colors"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/edit_clothing_colors"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/button_cancel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minLines="4"
-                android:gravity="top|left"
-                android:scrollbars="vertical"
-                android:hint="Colors" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/cancel" />
+            <Button
+                    android:text="@string/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_save" android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/button_cancel" app:layout_constraintEnd_toEndOf="parent"
+            />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_progress"
+                    app:layout_constraintTop_toBottomOf="@+id/progress_horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <!--<android.support.design.chip.ChipGroup-->
-            <!--android:id="@+id/chip_colors"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/text_colors">-->
-
-            <!--<android.support.design.chip.Chip-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="color1"/>-->
-
-            <!--<android.support.design.chip.Chip-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="color2"/>-->
-
-        <!--</android.support.design.chip.ChipGroup>-->
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="150dp"
-            android:gravity="top"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/edit_clothing_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minLines="4"
-                android:gravity="top|left"
-                android:scrollbars="vertical"
-                android:hint="Tags"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <!--<android.support.design.chip.ChipGroup-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/text_tags">-->
-
-            <!--<android.support.design.chip.Chip-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="tag1"/>-->
-
-            <!--<android.support.design.chip.Chip-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="tag2"/>-->
-
-        <!--</android.support.design.chip.ChipGroup>-->
 
     </LinearLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp">
-
-        <Button
-            android:id="@+id/button_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Delete" />
-
-        <Button
-            android:id="@+id/button_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Cancel" />
-
-    </android.support.constraint.ConstraintLayout>
-
-
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>
