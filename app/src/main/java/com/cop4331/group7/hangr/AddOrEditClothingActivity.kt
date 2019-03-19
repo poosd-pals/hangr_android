@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -146,7 +147,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                 text_progress.text = this.getString(R.string.uploading_image_percentage, progress)
             }
 
-            val urlTask = uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            // grabs the image reference to put in realtimeDB after upload completed
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if (!task.isSuccessful) { task.exception?.let { throw it } }
                 return@Continuation imageRef.downloadUrl
             })
@@ -160,10 +162,18 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleImageUploadSuccess(uri: Uri) {
+     private fun handleImageUploadSuccess(uri: Uri) {
         progress_horizontal.visibility = View.INVISIBLE
         text_progress.visibility = View.INVISIBLE
         Toast.makeText(this, "Image uploaded to firebase storage!", Toast.LENGTH_SHORT).show()
+        val clothingItem = FirebaseClothingItem(
+            edit_clothing_name.text.toString(),
+            edit_clothing_category.text.toString(),
+            edit_clothing_wears.text.toString().toInt(),
+            uri.toString()
+        )
+
+        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { Toast.makeText(this, it.result.toString(), Toast.LENGTH_SHORT).show()  }
     }
 
     private fun handleFailure(exception: Exception) {

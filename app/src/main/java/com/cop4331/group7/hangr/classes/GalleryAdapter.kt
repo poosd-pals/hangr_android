@@ -1,4 +1,4 @@
-package com.cop4331.group7.hangr
+package com.cop4331.group7.hangr.classes
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.cop4331.group7.hangr.AddOrEditClothingActivity
+import com.cop4331.group7.hangr.EXTRA_MESSAGE
+import com.cop4331.group7.hangr.R
 import kotlinx.android.synthetic.main.gallery_img_view.view.*
 
 class GalleryAdapter(private val myDataset: Array<String>) :
@@ -17,7 +20,7 @@ class GalleryAdapter(private val myDataset: Array<String>) :
         var placeHolder : TextView = itemView.text_placeholder
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.gallery_img_view, parent, false)
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
@@ -60,7 +61,17 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
         // recycler view
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
-        viewAdapter = GalleryAdapter(arrayOf("images", "loaded", "from", "DB", "should", "go", "here"))
+        viewAdapter = GalleryAdapter(
+            arrayOf(
+                "images",
+                "loaded",
+                "from",
+                "DB",
+                "should",
+                "go",
+                "here"
+            )
+        )
 
         recycler_gallery.apply {
             layoutManager = viewManager
