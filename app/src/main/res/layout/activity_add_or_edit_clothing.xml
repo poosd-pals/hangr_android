@@ -10,6 +10,7 @@
     tools:context=".AddOrEditClothingActivity"
     android:fillViewport="true">
 
+
     <LinearLayout
         android:id="@+id/nested_layout"
         android:layout_width="match_parent"
@@ -155,6 +156,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <!--<android.support.design.chip.ChipGroup-->
+
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
             <!--app:layout_constraintTop_toBottomOf="@+id/text_tags">-->

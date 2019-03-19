@@ -11,15 +11,17 @@ class CreateOutfitActivity : AppCompatActivity() {
     // go to activity when navigation button is pressed
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_new_clothes -> {
+            R.id.navigation_hampr -> {
                 val intent = Intent(this@CreateOutfitActivity, HamprActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
                 finish()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_gallery -> {
                 val intent = Intent(this@CreateOutfitActivity, ClosetGalleryActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
                 finish()
                 return@OnNavigationItemSelectedListener true
             }

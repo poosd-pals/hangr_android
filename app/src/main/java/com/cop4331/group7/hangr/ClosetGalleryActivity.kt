@@ -23,9 +23,10 @@ class ClosetGalleryActivity : AppCompatActivity() {
     // go to activity when navigation button is pressed
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_new_clothes -> {
+            R.id.navigation_hampr -> {
                 val intent = Intent(this@ClosetGalleryActivity, HamprActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
                 finish()
                 return@OnNavigationItemSelectedListener true
             }
@@ -35,6 +36,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
             R.id.navigation_outfit -> {
                 val intent = Intent(this@ClosetGalleryActivity, CreateOutfitActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
                 finish()
                 return@OnNavigationItemSelectedListener true
             }
@@ -49,7 +51,9 @@ class ClosetGalleryActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         fab_add_clothes.setOnClickListener { createNewClothingItem() }
-      
+
+        title = "Welcome, " + auth.currentUser!!.displayName + "!"
+
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
