@@ -9,14 +9,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.GalleryAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
-const val EXTRA_MESSAGE = "com.cop4331.group7.hangr.checkParent"
+
+const val EXISTING_CLOTHING_ITEM_DATA = "com.cop4331.group7.hangr.existing_clothing_data"
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -50,6 +55,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_closet_gallery)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         fab_add_clothes.setOnClickListener { createNewClothingItem() }
 
@@ -61,22 +67,23 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
         // recycler view
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
-        viewAdapter = GalleryAdapter(
-            arrayOf(
-                "images",
-                "loaded",
-                "from",
-                "DB",
-                "should",
-                "go",
-                "here"
-            )
-        )
+
+        val query = db.collection(auth.currentUser!!.uid)
+        val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+            .setQuery(query, FirebaseClothingItem::class.java)
+            .build()
+
+        viewAdapter = GalleryAdapter(response)
 
         recycler_gallery.apply {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        with (viewAdapter as GalleryAdapter) { startListening() }
     }
 
     private fun createNewClothingItem() {

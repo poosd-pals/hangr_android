@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.google.android.gms.tasks.Continuation
@@ -37,7 +38,6 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_or_edit_clothing)
 
-
         initListeners()
         initFirebase()
         setActivityStateEditOrNew()
@@ -45,7 +45,11 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
     private fun initListeners() {
         button_save.setOnClickListener { saveClothingItem() }
+        button_cancel.setOnClickListener { finish() }
         image_view_clothing_picture.setOnClickListener { showPictureDialog() }
+
+        // TODO: this function
+        // button_delete.setOnClickListener { deleteClothingItem() }
     }
 
     private fun initFirebase() {
@@ -55,20 +59,20 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     }
 
     private fun setActivityStateEditOrNew() {
-        val intent = this.intent
-        if (intent != null && intent.hasExtra(EXTRA_MESSAGE)) {
-            val intentFromActivity = intent.extras.getString(EXTRA_MESSAGE)
-            // Can not "delete" when coming from NewClothes, cancel finishes intent
-    //            if (intentFromActivity.equals("HamprActivity")) {
-    //                button_delete.isClickable = false
-    //                button_delete.visibility = View.INVISIBLE
-    //                button_cancel.setOnClickListener { finish() }
-    //            }
-    //            else {
-    //                // TODO: populate existing values if editing existing item from closet
-    //
-    //                button_cancel.setOnClickListener { moveToClosetGalleryActivity() }
-    //            }
+        if (intent != null && intent.hasExtra(EXISTING_CLOTHING_ITEM_DATA)) {
+            Toast.makeText(this, "We're editing an item!", Toast.LENGTH_SHORT).show()
+            isEditingClothingItem = true
+            val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
+            // TODO: Populate fields with existing data
+//            field_name.setText(existingClothingItem.name, TextView.BufferType.EDITABLE)
+            edit_clothing_name.setText(existingClothingItem.name)
+            edit_clothing_category.setText(existingClothingItem.category, TextView.BufferType.EDITABLE)
+            Picasso.get().load(existingClothingItem.imageUri).into(image_view_clothing_picture)
+        } else {
+            isEditingClothingItem = false
+
+            button_delete.isClickable = false
+            button_delete.visibility = View.INVISIBLE
         }
     }
 
@@ -90,8 +94,13 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             override fun onPermissionGranted() {
                 EasyImage.openCameraForImage(this@AddOrEditClothingActivity, 0)
             }
+
             override fun onPermissionDenied(deniedPermissions: List<String>) {
-                Toast.makeText(this@AddOrEditClothingActivity, "Permission Denied\n$deniedPermissions", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@AddOrEditClothingActivity,
+                    "Permission Denied\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -102,13 +111,17 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             .check()
     }
 
-    public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, object : DefaultCallback() {
             override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
                 e?.printStackTrace()
-                Toast.makeText(this@AddOrEditClothingActivity, "Error grabbing image! Please try again.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@AddOrEditClothingActivity,
+                    "Error grabbing image! Please try again.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
             override fun onImagesPicked(imagesFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
@@ -131,8 +144,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         // TODO: put image into cloud storage, save reference in firestore
         if (currentImage == null) {
             // TODO: handle saving of clothing item without image associated with it
-        }
-        else {
+        } else {
             progress_horizontal.visibility = View.VISIBLE
             text_progress.visibility = View.VISIBLE
             text_progress.text = this.getString(R.string.uploading_image_percentage, 0)
@@ -149,31 +161,34 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
             // grabs the image reference to put in realtimeDB after upload completed
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                if (!task.isSuccessful) { task.exception?.let { throw it } }
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
                 return@Continuation imageRef.downloadUrl
             })
                 .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    handleImageUploadSuccess(task.result!!)
-                } else {
-                    handleFailure(task.exception!!)
+                    if (task.isSuccessful) {
+                        handleImageUploadSuccess(task.result!!)
+                    } else {
+                        handleFailure(task.exception!!)
+                    }
                 }
-            }
         }
     }
 
-     private fun handleImageUploadSuccess(uri: Uri) {
+    private fun handleImageUploadSuccess(uri: Uri) {
         progress_horizontal.visibility = View.INVISIBLE
         text_progress.visibility = View.INVISIBLE
         Toast.makeText(this, "Image uploaded to firebase storage!", Toast.LENGTH_SHORT).show()
+        val wearsString = edit_clothing_wears.text.toString()
         val clothingItem = FirebaseClothingItem(
             edit_clothing_name.text.toString(),
             edit_clothing_category.text.toString(),
-            edit_clothing_wears.text.toString().toInt(),
+            if (wearsString.isBlank()) 0 else wearsString.toInt(),
             uri.toString()
         )
 
-        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { Toast.makeText(this, it.result.toString(), Toast.LENGTH_SHORT).show()  }
+        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { finish() }
     }
 
     private fun handleFailure(exception: Exception) {
