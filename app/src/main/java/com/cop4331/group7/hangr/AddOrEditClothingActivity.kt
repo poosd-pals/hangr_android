@@ -47,9 +47,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         button_save.setOnClickListener { saveClothingItem() }
         button_cancel.setOnClickListener { finish() }
         image_view_clothing_picture.setOnClickListener { showPictureDialog() }
-
-        // TODO: this function
-        // button_delete.setOnClickListener { deleteClothingItem() }
+        button_delete.setOnClickListener { deleteClothingItem() }
     }
 
     private fun initFirebase() {
@@ -63,8 +61,10 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             Toast.makeText(this, "We're editing an item!", Toast.LENGTH_SHORT).show()
             isEditingClothingItem = true
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
+
             // TODO: Populate fields with existing data
 //            field_name.setText(existingClothingItem.name, TextView.BufferType.EDITABLE)
+
             edit_clothing_name.setText(existingClothingItem.name)
             edit_clothing_category.setText(existingClothingItem.category, TextView.BufferType.EDITABLE)
             Picasso.get().load(existingClothingItem.imageUri).into(image_view_clothing_picture)
@@ -87,6 +87,16 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             }
         }
         pictureDialog.show()
+    }
+
+    private fun deleteClothingItem() {
+        if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)) {
+            Toast.makeText(this, "Cannot find item to delete!", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // TODO: get id of thing to delete from intent extras, and delete from storage and firestore
+        // val idToDelete = intent.hasExtra()
     }
 
     private fun requestCameraPermissionsAndOpenCamera() {
@@ -141,7 +151,6 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     }
 
     private fun uploadCurrentImageToUserStorage() {
-        // TODO: put image into cloud storage, save reference in firestore
         if (currentImage == null) {
             // TODO: handle saving of clothing item without image associated with it
         } else {
@@ -161,17 +170,12 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
             // grabs the image reference to put in realtimeDB after upload completed
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let { throw it }
-                }
+                if (!task.isSuccessful) { task.exception?.let { throw it } }
                 return@Continuation imageRef.downloadUrl
             })
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        handleImageUploadSuccess(task.result!!)
-                    } else {
-                        handleFailure(task.exception!!)
-                    }
+                    if (task.isSuccessful) { handleImageUploadSuccess(task.result!!) }
+                    else { handleFailure(task.exception!!) }
                 }
         }
     }
@@ -184,11 +188,11 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         val clothingItem = FirebaseClothingItem(
             edit_clothing_name.text.toString(),
             edit_clothing_category.text.toString(),
-            if (wearsString.isBlank()) 0 else wearsString.toInt(),
+            if (wearsString.isBlank()) -1 else wearsString.toInt(),
             uri.toString()
         )
 
-        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { finish() }
+        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception!!)}
     }
 
     private fun handleFailure(exception: Exception) {
@@ -206,11 +210,5 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         button_save.isEnabled = isEnabled
         button_cancel.isEnabled = isEnabled
         button_delete.isEnabled = isEnabled
-    }
-
-    private fun moveToClosetGalleryActivity() {
-        intent = Intent(this, ClosetGalleryActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

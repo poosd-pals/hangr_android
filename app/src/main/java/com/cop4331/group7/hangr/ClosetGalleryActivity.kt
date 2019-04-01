@@ -16,14 +16,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
-
 const val EXISTING_CLOTHING_ITEM_DATA = "com.cop4331.group7.hangr.existing_clothing_data"
+const val EXISTING_CLOTHING_ITEM_PARENT_ID = "com.cop4331.group7.hangr.existing_clothing_parent_id"
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: GalleryAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     // go to activity when navigation button is pressed
@@ -57,15 +57,43 @@ class ClosetGalleryActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        fab_add_clothes.setOnClickListener { createNewClothingItem() }
-
         title = "Welcome, " + auth.currentUser!!.displayName + "!"
+        fab_add_clothes.setOnClickListener { createNewClothingItem() }
 
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        // recycler view
+        setupRecyclerView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewAdapter.stopListening()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.actionbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.actionbar_logout -> {
+                handleLogout()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setupRecyclerView() {
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
 
         val query = db.collection(auth.currentUser!!.uid)
@@ -81,41 +109,15 @@ class ClosetGalleryActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        with (viewAdapter as GalleryAdapter) { startListening() }
-    }
-
     private fun createNewClothingItem() {
         val intent = Intent(this@ClosetGalleryActivity, AddOrEditClothingActivity::class.java)
         startActivity(intent)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.actionbar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.actionbar_logout -> {
-                handleLogout()
-                return true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun handleLogout() {
         auth.signOut()
 
         val intent = Intent(this, LoginActivity::class.java)
-
-        // clear the backstack
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-
         startActivity(intent)
         finish()
     }
