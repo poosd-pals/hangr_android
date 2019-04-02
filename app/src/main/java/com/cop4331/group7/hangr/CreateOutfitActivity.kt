@@ -48,7 +48,6 @@ class CreateOutfitActivity : AppCompatActivity() {
 
         // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)
-        intent.putExtra(EXTRA_MESSAGE, "AddItem to Outfit")
         startActivity(intent)
     }
 }

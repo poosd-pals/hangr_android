@@ -44,7 +44,6 @@ class HamprActivity : AppCompatActivity() {
 
     private fun moveToEditClothing() {
         intent = Intent(this, AddOrEditClothingActivity::class.java)
-        intent.putExtra(EXTRA_MESSAGE, "HamprActivity")
         startActivity(intent)
     }
 }
