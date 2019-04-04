@@ -50,5 +50,5 @@ dependencies {
     implementation 'com.github.jkwiecien:EasyImage:2.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'gun0912.ted:tedpermission:2.2.2'
-
+    implementation "com.hootsuite.android:nachos:1.1.1"
 }

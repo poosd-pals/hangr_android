@@ -20,7 +20,6 @@
 	<string name="password">Password</string>
 	<string name="username">Username</string>
 	<string name="log_in">Log In</string>
-	<string name="name">Name</string>
 	<string name="don_t_have_an_account">Don\'t have an account?</string>
 	<string name="already_have_an_account">already have an account?</string>
 	<string name="welcome">Welcome</string>
@@ -35,6 +34,13 @@
     <string name="hampr">Hampr</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-	<string name="delete">Delete</string>
+3	<string name="delete">Delete</string>
     <string name="uploading_image_percentage">uploading image… %1$d%%</string>
+    <string name="finish">Finish</string>
+	<string name="name">Name</string>
+	<string name="category">Category</string>
+	<string name="wears_before_wash">Wears Before Wash</string>
+    <string name="default_chip_text">default chip text</string>
+	<string name="colors">Colors</string>
+	<string name="tags">Tags</string>
 </resources>

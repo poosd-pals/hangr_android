@@ -19,8 +19,8 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.hootsuite.nachos.terminator.ChipTerminatorHandler
 import com.squareup.picasso.Picasso
-import android.widget.Toast
 import hideKeyboard
 import kotlinx.android.synthetic.main.activity_add_or_edit_clothing.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -48,14 +48,20 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-        button_save.setOnClickListener { saveClothingItem() }
-        button_cancel.setOnClickListener { finish() }
-        image_view_clothing_picture.setOnClickListener { showPictureDialog() }
+        image_editing_clothing.setOnClickListener { showPictureDialog() }
+        button_finish.setOnClickListener { saveClothingItem() }
         button_delete.setOnClickListener { deleteClothingItem() }
 
         // hide keyboard when clicking on the scrollview or nested linear layout
         add_or_edit_layout.setOnClickListener { it.hideKeyboard() }
         nested_layout.setOnClickListener { it.hideKeyboard() }
+
+        nacho_colors.addChipTerminator('\n', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
+        nacho_colors.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
+//        nacho_colors.enableEditChipOnTouch( , true)
+        nacho_tags.addChipTerminator('\n', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
+        nacho_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
+//        nacho_tags.enableEditChipOnTouch(false, true)
     }
 
     private fun initFirebase() {
@@ -75,7 +81,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
             edit_clothing_name.setText(existingClothingItem.name)
             edit_clothing_category.setText(existingClothingItem.category, TextView.BufferType.EDITABLE)
-            Picasso.get().load(existingClothingItem.imageUri).into(image_view_clothing_picture)
+            Picasso.get().load(existingClothingItem.imageUri).into(image_editing_clothing)
         } else {
             isEditingClothingItem = false
 
@@ -122,8 +128,6 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             }
         }
 
-
-
         TedPermission.with(this)
             .setPermissionListener(cameraPermissionListener)
             .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
@@ -146,7 +150,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
             override fun onImagesPicked(imagesFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
                 val image = imagesFiles.first()
-                Picasso.get().load(image).fit().into(image_view_clothing_picture)
+                Picasso.get().load(image).fit().into(image_editing_clothing)
                 currentImage = Uri.fromFile(image)
             }
 
@@ -167,7 +171,6 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             progress_horizontal.visibility = View.VISIBLE
             text_progress.visibility = View.VISIBLE
             text_progress.text = this.getString(R.string.uploading_image_percentage, 0)
-
 
             val imageRef = storage.child(currentUser.uid).child(currentImage!!.lastPathSegment!!)
 
@@ -194,14 +197,26 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         progress_horizontal.visibility = View.INVISIBLE
         text_progress.visibility = View.INVISIBLE
         Toast.makeText(this, "Image uploaded to firebase storage!", Toast.LENGTH_SHORT).show()
+
+        // preparing data to enter into firebase
         val wearsString = edit_clothing_wears.text.toString()
+        val wearsInt= if (wearsString.isBlank()) -1 else wearsString.toInt()
+
+        val colors = mutableListOf<String>()
+        nacho_colors.allChips.forEach { colors.add(it.text.toString()) }
+        val tags = mutableListOf<String>()
+        nacho_tags.allChips.forEach { tags.add(it.text.toString()) }
+
         val clothingItem = FirebaseClothingItem(
             edit_clothing_name.text.toString(),
             edit_clothing_category.text.toString(),
-            if (wearsString.isBlank()) -1 else wearsString.toInt(),
+            wearsInt,
+            colors,
+            tags,
             uri.toString()
         )
 
+        // TODO: add category / colors / tags to database entry for current user, implement autofill suggestions in the Nachos
         db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception!!)}
     }
 
@@ -217,8 +232,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     }
 
     private fun setButtonsEnabled(isEnabled: Boolean) {
-        button_save.isEnabled = isEnabled
-        button_cancel.isEnabled = isEnabled
+        button_finish.isEnabled = isEnabled
         button_delete.isEnabled = isEnabled
     }
 }
