@@ -16,9 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 
-const val EXISTING_CLOTHING_ITEM_DATA = "com.cop4331.group7.hangr.existing_clothing_data"
-const val EXISTING_CLOTHING_ITEM_PARENT_ID = "com.cop4331.group7.hangr.existing_clothing_parent_id"
-
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
