@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.cop4331.group7.hangr.classes.CreateCircularDrawable
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_DATA
@@ -90,7 +91,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                 Glide.with(this)
                     .load(existingClothingItem.imageUri)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
+                    .placeholder(CreateCircularDrawable.make(this))
                     .into(image_editing_clothing)
             } else {
                 Glide
@@ -181,7 +182,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                     .with(this@AddOrEditClothingActivity)
                     .load(image)
                     .centerCrop()
-                    .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
+                    .placeholder(CreateCircularDrawable.make(this@AddOrEditClothingActivity))
                     .into(image_editing_clothing)
 
                 currentImage = Uri.fromFile(image)

@@ -34,7 +34,7 @@ class GalleryAdapter(options: FirestoreRecyclerOptions<FirebaseClothingItem>) :
                 .with(holder.imageView.context)
                 .load(model.imageUri)
                 .centerCrop()
-                .placeholder(R.drawable.ic_hourglass_empty_black_24dp)
+                .placeholder(CreateCircularDrawable.make(holder.imageView.context))
                 .into(holder.imageView)
         } else {
             Glide
