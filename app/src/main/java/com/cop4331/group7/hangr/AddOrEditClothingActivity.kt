@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
+import com.cop4331.group7.hangr.classes.CATEGORIES
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -44,6 +44,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
         initListeners()
         initFirebase()
+        initSpinner()
         setActivityStateEditOrNew()
     }
 
@@ -58,16 +59,18 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
         nacho_colors.addChipTerminator('\n', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
         nacho_colors.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
-//        nacho_colors.enableEditChipOnTouch( , true)
         nacho_tags.addChipTerminator('\n', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
         nacho_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
-//        nacho_tags.enableEditChipOnTouch(false, true)
     }
 
     private fun initFirebase() {
         currentUser = FirebaseAuth.getInstance().currentUser!!
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance().reference
+    }
+
+    private fun initSpinner() {
+        spinner_category.setItems<String>(CATEGORIES)
     }
 
     private fun setActivityStateEditOrNew() {
@@ -77,10 +80,11 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
 
             // TODO: Populate fields with existing data
-//            field_name.setText(existingClothingItem.name, TextView.BufferType.EDITABLE)
-
             edit_clothing_name.setText(existingClothingItem.name)
-            edit_clothing_category.setText(existingClothingItem.category, TextView.BufferType.EDITABLE)
+
+            val index = CATEGORIES.indexOf(existingClothingItem.category)
+            spinner_category.setSelection(if (index == -1) 0 else index)
+
             Picasso.get().load(existingClothingItem.imageUri).into(image_editing_clothing)
         } else {
             isEditingClothingItem = false
@@ -209,7 +213,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
         val clothingItem = FirebaseClothingItem(
             edit_clothing_name.text.toString(),
-            edit_clothing_category.text.toString(),
+            spinner_category.selectedItem.toString(),
             wearsInt,
             colors,
             tags,

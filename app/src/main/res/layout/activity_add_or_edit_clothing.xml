@@ -47,7 +47,9 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    app:hintEnabled="true">
 
                     <EditText
                         android:id="@+id/edit_clothing_name"
@@ -55,25 +57,18 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:inputType="text"
-                        android:hint="@string/name"/>
+                        android:importantForAutofill="no"/>
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_category"
+                <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+                    android:id="@+id/spinner_category"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/edit_clothing_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:inputType="text"
-                        android:hint="@string/category"/>
-
-                </android.support.design.widget.TextInputLayout>
-
+                    android:layout_height="wrap_content"
+                    app:smsp_highlightColor="@color/colorPrimary"
+                    app:smsp_hint="@string/category"
+                    app:smsp_showEmptyDropdown="true"
+                    android:layout_margin="4dp"/>
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
