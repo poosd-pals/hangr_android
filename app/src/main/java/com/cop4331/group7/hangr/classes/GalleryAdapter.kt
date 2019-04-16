@@ -29,10 +29,10 @@ class ClothingGalleryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 class GalleryAdapter(options: FirestoreRecyclerOptions<FirebaseClothingItem>) :
     FirestoreRecyclerAdapter<FirebaseClothingItem, ClothingGalleryHolder>(options) {
     override fun onBindViewHolder(holder: ClothingGalleryHolder, position: Int, model: FirebaseClothingItem) {
-        if (model.imageUri.isNotBlank()) {
+        if (model.imageUrl.isNotBlank()) {
             Glide
                 .with(holder.imageView.context)
-                .load(model.imageUri)
+                .load(model.imageUrl)
                 .centerCrop()
                 .placeholder(CreateCircularDrawable.make(holder.imageView.context))
                 .into(holder.imageView)

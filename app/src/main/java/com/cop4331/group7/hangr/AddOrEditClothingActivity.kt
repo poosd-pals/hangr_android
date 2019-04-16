@@ -38,7 +38,9 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private lateinit var storage: StorageReference
 
     var isEditingClothingItem = false
-    var currentImage: Uri? = null
+    var previousImageStorageFilename: String? = null
+    var currentImageUri: Uri? = null
+    var currentImageStorageFilename: String? = null
     var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,9 +89,9 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             isEditingClothingItem = true
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
 
-            if (existingClothingItem.imageUri.isNotBlank()) {
+            if (existingClothingItem.imageUrl.isNotBlank()) {
                 Glide.with(this)
-                    .load(existingClothingItem.imageUri)
+                    .load(existingClothingItem.imageUrl)
                     .centerCrop()
                     .placeholder(CreateCircularDrawable.make(this))
                     .into(image_editing_clothing)
@@ -110,6 +112,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             nacho_colors.setText(existingClothingItem.colors)
             nacho_tags.setText(existingClothingItem.tags)
 
+            previousImageStorageFilename = existingClothingItem.imageFilename
         } else {
             isEditingClothingItem = false
 
@@ -132,13 +135,33 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     }
 
     private fun deleteClothingItem() {
-        if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)) {
+        if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID))
             Toast.makeText(this, "Cannot find item to delete!", Toast.LENGTH_LONG).show()
-            return
-        }
+        else if (!previousImageStorageFilename.isNullOrBlank())
+            removeImageFromStorage()
+        else
+            removeCurrentItemFromFirebase()
+    }
 
-        // TODO: get id of thing to delete from intent extras, and delete from storage and firestore
-        // val idToDelete = intent.hasExtra()
+    private fun removeCurrentItemFromFirebase() {
+        val documentId = intent.getStringExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)
+        db.collection(currentUser.uid).document(documentId).delete().addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(this, "Successfully deleted item!", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            else {
+                handleFailure(it.exception)
+            }
+        }
+    }
+
+    private fun removeImageFromStorage() {
+        val imageRef = storage.child(currentUser.uid).child(previousImageStorageFilename!!)
+        imageRef.delete().addOnCompleteListener {
+            if (it.isSuccessful) { removeCurrentItemFromFirebase() }
+            else { handleFailure(it.exception) }
+        }
     }
 
     private fun requestCameraPermissionsAndOpenCamera() {
@@ -185,7 +208,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                     .placeholder(CreateCircularDrawable.make(this@AddOrEditClothingActivity))
                     .into(image_editing_clothing)
 
-                currentImage = Uri.fromFile(image)
+                currentImageUri = Uri.fromFile(image)
             }
 
             override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
@@ -203,9 +226,10 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         text_progress.visibility = View.VISIBLE
         text_progress.text = this.getString(R.string.uploading_image_percentage, 0)
 
-        val imageRef = storage.child(currentUser.uid).child(currentImage!!.lastPathSegment!!)
+        currentImageStorageFilename = currentImageUri!!.lastPathSegment!!
+        val imageRef = storage.child(currentUser.uid).child(currentImageStorageFilename!!)
 
-        val uploadTask = imageRef.putFile(currentImage!!)
+        val uploadTask = imageRef.putFile(currentImageUri!!)
         uploadTask.addOnProgressListener {
             val progress = (100.0 * it.bytesTransferred / it.totalByteCount).toInt()
             progress_horizontal.progress = progress
@@ -219,7 +243,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         })
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) { handleImageUploadSuccess(task.result!!) }
-                else { handleFailure(task.exception!!) }
+                else { handleFailure(task.exception) }
             }
     }
 
@@ -230,15 +254,15 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         saveClothingItem(uri)
     }
 
-    private fun handleFailure(exception: Exception) {
-        throw exception
+    private fun handleFailure(exception: Exception?) {
+        throw exception!!
     }
 
     private fun handleSavePressed() {
         // TODO: check for whole form being complete before uploading proceeding
         setFormUiEnabled(false)
         progress_circular.visibility = View.VISIBLE
-        if (currentImage != null)
+        if (currentImageUri != null)
             uploadCurrentImageToUserStorage()
         else
             saveClothingItem()
@@ -259,11 +283,12 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             wearsInt,
             colors,
             tags,
-            uri?.toString() ?: ""
+            uri?.toString() ?: "",
+            currentImageStorageFilename ?: ""
         )
 
         // TODO: add colors / tags to database entry for current user, implement autofill suggestions in the Nachos (???)
-        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception!!)}    }
+        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception)}    }
 
     private fun setFormUiEnabled(isEnabled: Boolean) {
         image_editing_clothing.isClickable = isEnabled

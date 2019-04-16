@@ -12,6 +12,7 @@ data class FirebaseClothingItem (
     val wears: Int = -1,
     val colors: List<String> = emptyList(),
     val tags: List<String> = emptyList(),
-    val imageUri: String = "",
+    val imageUrl: String = "",
+    val imageFilename: String = "",
     @ServerTimestamp val dateCreated: Timestamp? = null
 ) : Parcelable
