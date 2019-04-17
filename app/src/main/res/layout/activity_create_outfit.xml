@@ -8,29 +8,25 @@
 	android:layout_height="match_parent"
 	tools:context=".CreateOutfitActivity">
 
-	<android.support.design.widget.BottomNavigationView
-		android:id="@+id/navigation"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:background="?android:attr/windowBackground"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:menu="@menu/navigation"/>
-
 	<LinearLayout
 		android:id="@+id/layout_outfit_container"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toTopOf="@+id/navigation">
+		app:layout_constraintBottom_toTopOf="@+id/navigation_outfit">
 
-		<android.support.v7.widget.RecyclerView
-			android:id="@+id/recycler_outfit"
+		<ScrollView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="16dp"/>
+			android:layout_height="wrap_content">
+
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/recycler_outfit"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="16dp"/>
+
+		</ScrollView>
 
 		<android.support.design.widget.FloatingActionButton
 			android:id="@+id/fab_add_to_outfit"
@@ -39,7 +35,7 @@
 			android:layout_gravity="center"
 			android:clickable="true"
 			android:focusable="true"
-			app:srcCompat="@android:drawable/ic_input_add" />
+			app:srcCompat="@android:drawable/ic_input_add"/>
 
 	</LinearLayout>
 
@@ -48,11 +44,20 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginEnd="16dp"
-		android:layout_marginBottom="8dp"
-		app:layout_constraintBottom_toTopOf="@id/navigation"
+		android:layout_marginBottom="16dp"
+		app:layout_constraintBottom_toTopOf="@id/navigation_outfit"
 		app:layout_constraintEnd_toEndOf="parent"
 		android:text="Finish Outfit"/>
 
+	<android.support.design.widget.BottomNavigationView
+		android:id="@+id/navigation_outfit"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:background="?android:attr/windowBackground"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:menu="@menu/navigation"/>
 
 
 </android.support.constraint.ConstraintLayout>

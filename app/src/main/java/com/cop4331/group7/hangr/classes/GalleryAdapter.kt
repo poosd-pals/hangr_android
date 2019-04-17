@@ -1,5 +1,6 @@
 package com.cop4331.group7.hangr.classes
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -9,25 +10,30 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.AddOrEditClothingActivity
+import com.cop4331.group7.hangr.ClosetGalleryActivity
 import com.cop4331.group7.hangr.R
 import com.cop4331.group7.hangr.R.layout
 import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_DATA
 import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_PARENT_ID
+import com.cop4331.group7.hangr.constants.SELECTED_OUTFIT
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.android.synthetic.main.gallery_img_view.view.*
 
-class ClothingGalleryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var button : LinearLayout = itemView.layout_gallery
-    var placeHolder : TextView = itemView.text_placeholder
+class ClothingGalleryHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    var button: LinearLayout = itemView.layout_gallery
+    var placeHolder: TextView = itemView.text_placeholder
     var imageView: ImageView = itemView.image_view
 }
 
-class GalleryAdapter(options: FirestoreRecyclerOptions<FirebaseClothingItem>) :
+class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecyclerOptions<FirebaseClothingItem>,
+                     private val assemblingOutfit: Boolean):
     FirestoreRecyclerAdapter<FirebaseClothingItem, ClothingGalleryHolder>(options) {
+
     override fun onBindViewHolder(holder: ClothingGalleryHolder, position: Int, model: FirebaseClothingItem) {
         if (model.imageUrl.isNotBlank()) {
             Glide
@@ -44,6 +50,23 @@ class GalleryAdapter(options: FirestoreRecyclerOptions<FirebaseClothingItem>) :
         }
 
         holder.placeHolder.text = model.name
+
+        // if originating from AssembleOutfit, add clothing item to outfit list and finish activity
+        if (assemblingOutfit) {
+            holder.button.setOnClickListener {
+                // TODO: model needs to get passed to Assemble Outfit
+                // model
+                val returnIntent = Intent()
+                returnIntent.putExtra(SELECTED_OUTFIT, model)
+                mActivity.setResult(Activity.RESULT_OK, returnIntent)
+
+                //Toast.makeText(it.context, "Adding clothing to outfit", Toast.LENGTH_LONG).show()
+                (it.context as ClosetGalleryActivity).finish()
+            }
+        }
+
+
+        // start add or edit when item is long pressed
         holder.button.setOnLongClickListener {
             val intent = Intent(it.context, AddOrEditClothingActivity::class.java)
 

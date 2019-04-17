@@ -36,8 +36,8 @@ class HamprActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hampr)
 
         text_clothes.text = "Hampr Activity"
-        navigation.menu.getItem(0).isChecked = true
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation_hampr.menu.getItem(0).isChecked = true
+        navigation_hampr.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         button_edit.setOnClickListener { moveToEditClothing() }
     }
