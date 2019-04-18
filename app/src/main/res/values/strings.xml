@@ -43,4 +43,7 @@
     <string name="default_chip_text">default chip text</string>
 	<string name="colors">Colors</string>
 	<string name="tags">Tags</string>
+    <string name="filter">Filter</string>
+    <string name="filter_prompt">Filter...</string>
+    <string name="categories">Categories</string>
 </resources>

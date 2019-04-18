@@ -2,19 +2,26 @@ package com.cop4331.group7.hangr
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.chip.Chip
+import android.support.design.chip.ChipGroup
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.*
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.GalleryAdapter
+import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
+import kotlinx.android.synthetic.main.inner_filter_view.*
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -61,7 +68,24 @@ class ClosetGalleryActivity : AppCompatActivity() {
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        setupRecyclerView()
+        initRecyclerView()
+        initExpandableListeners()
+    }
+
+    private fun initExpandableListeners() {
+        val colors: ChipGroup = filter_chip_group
+        filter_chip_group.isSingleSelection = false
+
+        CATEGORIES.forEach {
+            val chip = Chip(this)
+            chip.text = it
+            chip.isCheckable = true
+            chip.setOnCheckedChangeListener { button, b -> Toast.makeText(button.context, "${button.text} checked is $b", Toast.LENGTH_SHORT).show() }
+            colors.addView(chip)
+            Log.d("whee", "created chip $it")
+        }
+        with (colors.parent as View) { this.requestLayout() }
+
     }
 
     override fun onStart() {
@@ -76,8 +100,13 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.actionbar, menu)
+        inflater.inflate(R.menu.gallery_actionbar, menu)
+
         return true
+    }
+
+    private fun applyFilterWithCategory(category: String) {
+        Toast.makeText(this, "category is $category", Toast.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,7 +119,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun initRecyclerView() {
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
 
         val query = db.collection(auth.currentUser!!.uid)

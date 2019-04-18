@@ -8,6 +8,18 @@
         android:layout_height="match_parent"
         tools:context=".ClosetGalleryActivity">
 
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:id="@+id/expand_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/filter_prompt"
+        app:icon="@drawable/ic_filter_list_black_24dp"
+        app:inner_view="@layout/inner_filter_view"
+        app:expandOnClick="true"
+        app:animationDuration="300"
+        app:startExpanded="false"/>
+
     <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="0dp"
@@ -26,7 +38,7 @@
             android:layout_height="0dp"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expand_filter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintHorizontal_bias="0.0"
