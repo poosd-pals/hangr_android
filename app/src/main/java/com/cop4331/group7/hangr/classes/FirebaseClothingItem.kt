@@ -9,6 +9,7 @@ import kotlinx.android.parcel.Parcelize
 data class FirebaseClothingItem (
     val name: String = "",
     val category: String = "",
+    val wearsBeforeWash: Int = 0,
     val wears: Int = -1,
     val colors: List<String> = emptyList(),
     val tags: List<String> = emptyList(),

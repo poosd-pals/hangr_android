@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.OutfitAdapter
+import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
 import com.cop4331.group7.hangr.constants.SELECTED_OUTFIT
 import com.google.firebase.auth.FirebaseAuth
@@ -60,7 +62,7 @@ class CreateOutfitActivity : AppCompatActivity() {
         navigation_outfit.menu.getItem(2).isChecked = true
         navigation_outfit.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        fab_add_to_outfit.setOnClickListener { selectClothing() }
+        fab_add_to_outfit.setOnClickListener { openCategoryDialog() }
         button_finish_outfit.setOnClickListener { finalizeOutfit() }
 
         setupRecyclerView()
@@ -81,23 +83,24 @@ class CreateOutfitActivity : AppCompatActivity() {
     }
 
     // open gallery filtered by category and add to recycler
-    private fun selectClothing() {
-        // popup category menu
-        val category = selectCategory()
+    private fun openCategoryDialog() {
+        // popup menu
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Select a category...")
+            .setItems(
+                CATEGORIES.toTypedArray() ) { _, i ->
+                selectClothingItemWithCategory(CATEGORIES[i])
+            }
+            .create()
 
+        dialog.show()
+    }
+
+    private fun selectClothingItemWithCategory(category: String) {
         // open gallery filtered by category
         val intent = Intent(this, ClosetGalleryActivity::class.java)
         intent.putExtra(DESIRED_CATEGORY, category)
         startActivityForResult(intent, 1)
-
-    }
-
-    private fun selectCategory(): String {
-        // popup menu
-
-        // capture user's desired category
-
-        return "Accessories"
     }
 
     // account for each item being worn and return to closet
@@ -122,7 +125,6 @@ class CreateOutfitActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "putExtra failed", Toast.LENGTH_LONG).show()
                 }
-
             }
         }
     }

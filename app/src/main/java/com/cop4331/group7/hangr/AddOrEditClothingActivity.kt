@@ -281,6 +281,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             edit_clothing_name.text.toString(),
             category ?: "",
             wearsInt,
+            wearsInt,
             colors,
             tags,
             uri?.toString() ?: "",
