@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
@@ -62,11 +63,6 @@ class ClosetGalleryActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         setActivityState()
-
-        // get navigation view and set current item to checked
-        navigation_gallery.menu.getItem(1).isChecked = true
-        navigation_gallery.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
         setupRecyclerView()
     }
 
@@ -100,15 +96,22 @@ class ClosetGalleryActivity : AppCompatActivity() {
         if (intent.hasExtra(DESIRED_CATEGORY)) {
             isSelectingForOutfit = true
             title = "Select an item!"
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            // hide fab and bottom nav
             fab_add_clothes.hide()
-            // TODO: is this necessary with .hide()?
-            fab_add_clothes.isClickable = false
+            navigation_gallery.visibility = View.INVISIBLE
 
             // existing outfit and desired category from outfit being assembled
             category = intent.extras?.getString(DESIRED_CATEGORY)
         } else {
             title = "Welcome, " + auth.currentUser!!.displayName + "!"
             fab_add_clothes.setOnClickListener { createNewClothingItem() }
+
+            // get navigation view and set current item to checked
+            navigation_gallery.menu.getItem(1).isChecked = true
+            navigation_gallery.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         }
 
     }

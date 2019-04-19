@@ -25,6 +25,7 @@
         </activity>
         <activity
                 android:name=".CreateOutfitActivity"
+                android:launchMode="singleTop"
                 android:label="@string/title_activity_create_outfit">
         </activity>
         <activity
@@ -33,6 +34,8 @@
         </activity>
         <activity
                 android:name=".ClosetGalleryActivity"
+                android:launchMode="singleTop"
+                android:parentActivityName=".CreateOutfitActivity"
                 android:label="@string/title_activity_closet_gallery">
         </activity>
         <activity

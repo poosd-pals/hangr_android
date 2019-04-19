@@ -51,32 +51,30 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
 
         holder.placeHolder.text = model.name
 
-        // if originating from AssembleOutfit, add clothing item to outfit list and finish activity
+
         if (assemblingOutfit) {
+            // if originating from AssembleOutfit, add clothing item to outfit list and finish activity
             holder.button.setOnClickListener {
-                // TODO: model needs to get passed to Assemble Outfit
-                // model
                 val returnIntent = Intent()
+
                 returnIntent.putExtra(SELECTED_OUTFIT, model)
                 mActivity.setResult(Activity.RESULT_OK, returnIntent)
 
-                //Toast.makeText(it.context, "Adding clothing to outfit", Toast.LENGTH_LONG).show()
                 (it.context as ClosetGalleryActivity).finish()
             }
-        }
+        } else {
+            // start add or edit when item is long pressed (not accessible when assembling outfit)
+            holder.button.setOnLongClickListener {
+                val intent = Intent(it.context, AddOrEditClothingActivity::class.java)
 
+                intent.putExtra(EXISTING_CLOTHING_ITEM_DATA, model)
+                with (snapshots.getSnapshot(holder.adapterPosition)) {
+                    intent.putExtra(EXISTING_CLOTHING_ITEM_PARENT_ID, this.id)
+                }
 
-        // start add or edit when item is long pressed
-        holder.button.setOnLongClickListener {
-            val intent = Intent(it.context, AddOrEditClothingActivity::class.java)
-
-            intent.putExtra(EXISTING_CLOTHING_ITEM_DATA, model)
-            with (snapshots.getSnapshot(holder.adapterPosition)) {
-                intent.putExtra(EXISTING_CLOTHING_ITEM_PARENT_ID, this.id)
+                it.context.startActivity(intent)
+                true
             }
-
-            it.context.startActivity(intent)
-            true
         }
     }
 

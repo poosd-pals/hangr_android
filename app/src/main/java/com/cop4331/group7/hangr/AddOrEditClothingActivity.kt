@@ -37,11 +37,11 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: StorageReference
 
-    var isEditingClothingItem = false
-    var previousImageStorageFilename: String? = null
-    var currentImageUri: Uri? = null
-    var currentImageStorageFilename: String? = null
-    var category: String? = null
+    private var isEditingClothingItem = false
+    private var previousImageStorageFilename: String? = null
+    private var currentImageUri: Uri? = null
+    private var currentImageStorageFilename: String? = null
+    private var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

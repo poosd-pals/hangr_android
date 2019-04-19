@@ -14,7 +14,6 @@ import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
 import com.cop4331.group7.hangr.constants.SELECTED_OUTFIT
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_closet_gallery.*
 import kotlinx.android.synthetic.main.activity_create_outfit.*
 
 class CreateOutfitActivity : AppCompatActivity() {
@@ -26,7 +25,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     private var outfit = mutableListOf<FirebaseClothingItem?>()
 
-    // go to activity when navigation button is pressed
+    // go to specified activity when navigation button is pressed
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_hampr -> {
