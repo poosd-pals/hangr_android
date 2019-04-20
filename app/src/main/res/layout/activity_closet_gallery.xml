@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/filter_prompt"
-        app:icon="@drawable/ic_filter_list_black_24dp"
         app:inner_view="@layout/inner_filter_view"
         app:expandOnClick="true"
         app:animationDuration="300"
