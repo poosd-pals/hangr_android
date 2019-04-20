@@ -2,23 +2,30 @@ package com.cop4331.group7.hangr
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.chip.Chip
+import android.support.design.chip.ChipGroup
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
+import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
+import kotlinx.android.synthetic.main.inner_filter_view.*
 import java.util.*
+
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -64,6 +71,21 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
         setActivityState()
         setupRecyclerView()
+        initExpandableListeners()
+    }
+
+    private fun initExpandableListeners() {
+        val colors: ChipGroup = filter_chip_group
+        filter_chip_group.isSingleSelection = false
+
+        CATEGORIES.forEach {
+            val chip = Chip(this)
+            chip.text = it
+            chip.isCheckable = true
+            chip.setOnCheckedChangeListener { button, b -> Toast.makeText(button.context, "${button.text} checked is $b", Toast.LENGTH_SHORT).show() }
+            colors.addView(chip)
+            Log.d("whee", "created chip $it")
+        }
     }
 
     override fun onStart() {
@@ -78,7 +100,8 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.actionbar, menu)
+        inflater.inflate(R.menu.gallery_actionbar, menu)
+
         return true
     }
 
@@ -101,7 +124,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
             // hide fab and bottom nav
             fab_add_clothes.hide()
-            navigation_gallery.visibility = View.GONE
+            navigation.visibility = View.GONE
 
             // existing outfit and desired category from outfit being assembled
             category = intent.extras?.getString(DESIRED_CATEGORY)
@@ -110,8 +133,8 @@ class ClosetGalleryActivity : AppCompatActivity() {
             fab_add_clothes.setOnClickListener { createNewClothingItem() }
 
             // get navigation view and set current item to checked
-            navigation_gallery.menu.getItem(1).isChecked = true
-            navigation_gallery.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+            navigation.menu.getItem(1).isChecked = true
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         }
 
     }
