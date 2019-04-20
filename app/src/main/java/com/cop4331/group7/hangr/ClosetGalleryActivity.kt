@@ -11,14 +11,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
+import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
-import java.util.ArrayList
+import java.util.*
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -101,7 +101,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
             // hide fab and bottom nav
             fab_add_clothes.hide()
-            navigation_gallery.visibility = View.INVISIBLE
+            navigation_gallery.visibility = View.GONE
 
             // existing outfit and desired category from outfit being assembled
             category = intent.extras?.getString(DESIRED_CATEGORY)
@@ -120,17 +120,14 @@ class ClosetGalleryActivity : AppCompatActivity() {
         viewManager = GridLayoutManager(this@ClosetGalleryActivity, 2)
 
         val clothesRef = db.collection(auth.currentUser!!.uid)
-        val query: Query
+        val clothingItemQuery = FirebaseClothingItemQueryBuilder(clothesRef)
 
         // filter for selected category if applicable
-        if (isSelectingForOutfit) {
-            query = clothesRef.whereEqualTo("category", category)
-        } else {
-            query = clothesRef
-        }
+        if (isSelectingForOutfit && !category.isNullOrBlank())
+            clothingItemQuery.addCategories(listOf(category!!))
 
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-            .setQuery(query, FirebaseClothingItem::class.java)
+            .setQuery(clothingItemQuery.build(), FirebaseClothingItem::class.java)
             .build()
 
         viewAdapter = GalleryAdapter(this, response, isSelectingForOutfit)
