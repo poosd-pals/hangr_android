@@ -82,7 +82,7 @@ class CreateOutfitActivity : AppCompatActivity() {
         viewAdapter!!.notifyDataSetChanged()
     }
 
-    // open gallery filtered by category and add to recycler
+    // prompt user which category they want to search for
     private fun openCategoryDialog() {
         // popup menu
         val dialog = AlertDialog.Builder(this)
@@ -96,16 +96,17 @@ class CreateOutfitActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // starts activity, passing the category as extra
     private fun selectClothingItemWithCategory(category: String) {
         // open gallery filtered by category
-        val intent = Intent(this, ClosetGalleryActivity::class.java)
+        val intent = Intent(this, SelectClothingActivity::class.java)
         intent.putExtra(DESIRED_CATEGORY, category)
         startActivityForResult(intent, 1)
     }
 
     // account for each item being worn and return to closet
     private fun finalizeOutfit() {
-        // TODO: for each clothing in outfit, decrement "wears remaining" field
+        // TODO: for each clothing in outfit, decrement "wearsRemaining remaining" field
 
         // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)

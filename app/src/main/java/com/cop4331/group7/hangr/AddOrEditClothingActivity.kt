@@ -55,6 +55,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         setActivityStateEditOrNew()
     }
 
+    // initialize listeners for buttons and chip groups
     private fun initListeners() {
         image_editing_clothing.setOnClickListener { showPictureDialog() }
         button_finish.setOnClickListener { handleSavePressed() }
@@ -70,12 +71,14 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         nacho_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
     }
 
+    // initialize firebase instances
     private fun initFirebase() {
         currentUser = FirebaseAuth.getInstance().currentUser!!
         db = FirebaseFirestore.getInstance()
         storage = FirebaseStorage.getInstance().reference
     }
 
+    // initialize dropdown menu
     private fun initSpinner() {
         spinner_category.setItems<String>(CATEGORIES)
         spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -84,11 +87,14 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         }
     }
 
+    // determines if the current clothing item is new or existing (editing)
     private fun setActivityStateEditOrNew() {
         if (intent.hasExtra(EXISTING_CLOTHING_ITEM_DATA)) {
+            // editing item
             isEditingClothingItem = true
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
 
+            // loads existing image or default image
             if (existingClothingItem.imageUrl.isNotBlank()) {
                 Glide.with(this)
                     .load(existingClothingItem.imageUrl)
@@ -102,18 +108,20 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                     .into(image_editing_clothing)
             }
 
+            // set field values to the values of existing item
             edit_clothing_name.setText(existingClothingItem.name)
 
             val index = CATEGORIES.indexOf(existingClothingItem.category)
             spinner_category.setSelection(if (index == -1) 0 else index + 1)
 
-            edit_clothing_wears.setText(existingClothingItem.wears.toString())
+            edit_clothing_wears.setText(existingClothingItem.wearsRemaining.toString())
 
             nacho_colors.setText(existingClothingItem.colors)
             nacho_tags.setText(existingClothingItem.tags)
 
             previousImageStorageFilename = existingClothingItem.imageFilename
         } else {
+            // existing item
             isEditingClothingItem = false
 
             button_delete.isClickable = false
@@ -121,6 +129,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         }
     }
 
+    // prompts user to select image from album or take picture
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle("Select Action")
@@ -134,15 +143,17 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         pictureDialog.show()
     }
 
+    // call deletion helps depending on uid and image state
     private fun deleteClothingItem() {
         if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID))
             Toast.makeText(this, "Cannot find item to delete!", Toast.LENGTH_LONG).show()
         else if (!previousImageStorageFilename.isNullOrBlank())
-            removeImageFromStorage()
+            removeImageAndItemFromStorage()
         else
             removeCurrentItemFromFirebase()
     }
 
+    // removes clothing item from database and returns to main gallery
     private fun removeCurrentItemFromFirebase() {
         val documentId = intent.getStringExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)
         db.collection(currentUser.uid).document(documentId).delete().addOnCompleteListener {
@@ -156,7 +167,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeImageFromStorage() {
+    // removes image from storage then calls helper to remove rest of object
+    private fun removeImageAndItemFromStorage() {
         val imageRef = storage.child(currentUser.uid).child(previousImageStorageFilename!!)
         imageRef.delete().addOnCompleteListener {
             if (it.isSuccessful) { removeCurrentItemFromFirebase() }
@@ -164,6 +176,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         }
     }
 
+    // manages camera permissions
     private fun requestCameraPermissionsAndOpenCamera() {
         val cameraPermissionListener: PermissionListener = object : PermissionListener {
             override fun onPermissionGranted() {
@@ -186,6 +199,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             .check()
     }
 
+    // manages image interaction resulting states
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -221,6 +235,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         })
     }
 
+    // loads media into storage and handles progress bars for the action
     private fun uploadCurrentImageToUserStorage() {
         progress_horizontal.visibility = View.VISIBLE
         text_progress.visibility = View.VISIBLE
@@ -268,9 +283,10 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             saveClothingItem()
     }
 
+    // creates clothing object and stores it in database
     private fun saveClothingItem(uri: Uri? = null) {
         val wearsString = edit_clothing_wears.text.toString()
-        val wearsInt= if (wearsString.isBlank()) -1 else wearsString.toInt()
+        val wearsInt = if (wearsString.isBlank()) -1 else wearsString.toInt()
 
         val colors = mutableListOf<String>()
         nacho_colors.allChips.forEach { colors.add(it.text.toString()) }
@@ -291,6 +307,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         // TODO: add colors / tags to database entry for current user, implement autofill suggestions in the Nachos (???)
         db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception)}    }
 
+    // sets UI interactivity. Disable to prevent data changing while uploading
     private fun setFormUiEnabled(isEnabled: Boolean) {
         image_editing_clothing.isClickable = isEnabled
         edit_clothing_name.isEnabled = isEnabled

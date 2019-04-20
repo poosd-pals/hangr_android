@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.AddOrEditClothingActivity
 import com.cop4331.group7.hangr.ClosetGalleryActivity
 import com.cop4331.group7.hangr.R
 import com.cop4331.group7.hangr.R.layout
+import com.cop4331.group7.hangr.SelectClothingActivity
 import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_DATA
 import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_PARENT_ID
 import com.cop4331.group7.hangr.constants.SELECTED_OUTFIT
@@ -51,7 +51,6 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
 
         holder.placeHolder.text = model.name
 
-
         if (assemblingOutfit) {
             // if originating from AssembleOutfit, add clothing item to outfit list and finish activity
             holder.button.setOnClickListener {
@@ -60,7 +59,7 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
                 returnIntent.putExtra(SELECTED_OUTFIT, model)
                 mActivity.setResult(Activity.RESULT_OK, returnIntent)
 
-                (it.context as ClosetGalleryActivity).finish()
+                (it.context as SelectClothingActivity).finish()
             }
         } else {
             // start add or edit when item is long pressed (not accessible when assembling outfit)
