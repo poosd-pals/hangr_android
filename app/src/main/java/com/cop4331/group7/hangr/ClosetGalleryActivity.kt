@@ -13,7 +13,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
@@ -24,18 +23,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_closet_gallery.*
 import kotlinx.android.synthetic.main.inner_filter_view.*
-import java.util.*
 
 
 class ClosetGalleryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var viewAdapter: GalleryAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var queryBuilder: FirebaseClothingItemQueryBuilder
 
     private var isSelectingForOutfit = false
-    private var outfit: ArrayList<FirebaseClothingItem>? = null
     private var category: String? = null
 
     // go to activity when navigation button is pressed
@@ -68,6 +65,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        queryBuilder = FirebaseClothingItemQueryBuilder(db.collection(auth.currentUser!!.uid))
 
         setActivityState()
         setupRecyclerView()
@@ -82,20 +80,34 @@ class ClosetGalleryActivity : AppCompatActivity() {
             val chip = Chip(this)
             chip.text = it
             chip.isCheckable = true
-            chip.setOnCheckedChangeListener { button, b -> Toast.makeText(button.context, "${button.text} checked is $b", Toast.LENGTH_SHORT).show() }
+            chip.setOnCheckedChangeListener { button, isSelected ->
+                if (isSelected)
+                    queryBuilder.addCategories(listOf(button.text as String))
+                else
+                    queryBuilder.removeCategories(listOf(button.text as String))
+
+                val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+                    .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
+                    .build()
+
+                val viewAdapter = GalleryAdapter(this, response, isSelectingForOutfit)
+                recycler_gallery.adapter = viewAdapter
+                viewAdapter.startListening()
+            }
             colors.addView(chip)
             Log.d("whee", "created chip $it")
         }
+        colors.isSingleSelection = true
     }
 
     override fun onStart() {
         super.onStart()
-        viewAdapter.startListening()
+        with (recycler_gallery.adapter as GalleryAdapter) { this.startListening()}
     }
 
     override fun onStop() {
         super.onStop()
-        viewAdapter.stopListening()
+        with (recycler_gallery.adapter as GalleryAdapter) { this.stopListening() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -153,7 +165,7 @@ class ClosetGalleryActivity : AppCompatActivity() {
             .setQuery(clothingItemQuery.build(), FirebaseClothingItem::class.java)
             .build()
 
-        viewAdapter = GalleryAdapter(this, response, isSelectingForOutfit)
+        val viewAdapter = GalleryAdapter(this, response, isSelectingForOutfit)
 
         recycler_gallery.apply {
             layoutManager = viewManager

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.AddOrEditClothingActivity
 import com.cop4331.group7.hangr.ClosetGalleryActivity
@@ -50,7 +49,6 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
         }
 
         holder.placeHolder.text = model.name
-
 
         if (assemblingOutfit) {
             // if originating from AssembleOutfit, add clothing item to outfit list and finish activity
