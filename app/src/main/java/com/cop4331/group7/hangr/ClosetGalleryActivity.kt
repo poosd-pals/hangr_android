@@ -63,29 +63,6 @@ class ClosetGalleryActivity: AppCompatActivity() {
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-//         CATEGORIES.forEach {
-//             val chip = Chip(this)
-//             chip.text = it
-//             chip.isCheckable = true
-//             chip.setOnCheckedChangeListener { button, isSelected ->
-//                 if (isSelected)
-//                     queryBuilder.addCategories(listOf(button.text as String))
-//                 else
-//                     queryBuilder.removeCategories(listOf(button.text as String))
-
-//                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-//                     .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
-//                     .build()
-
-//                 val viewAdapter = GalleryAdapter(this, response, isSelectingForOutfit)
-//                 recycler_gallery.adapter = viewAdapter
-//                 viewAdapter.startListening()
-//             }
-//             colors.addView(chip)
-//             Log.d("whee", "created chip $it")
-//         }
-//         colors.isSingleSelection = true
-//     }
     }
 
     // inflates options menu to logout
