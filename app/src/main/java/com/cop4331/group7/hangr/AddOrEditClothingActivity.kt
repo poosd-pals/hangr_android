@@ -11,9 +11,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.classes.CreateCircularDrawable
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
-import com.cop4331.group7.hangr.constants.CATEGORIES
-import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_DATA
-import com.cop4331.group7.hangr.constants.EXISTING_CLOTHING_ITEM_PARENT_ID
+import com.cop4331.group7.hangr.constants.*
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -305,7 +303,10 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         )
 
         // TODO: add colors / tags to database entry for current user, implement autofill suggestions in the Nachos (???)
-        db.collection(currentUser.uid).add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception)}    }
+        with(db.collection(HANGR_DB_STRING).document(currentUser.uid).collection(CLOTHING_DB_STRING)) {
+            add(clothingItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception) }
+        }
+    }
 
     // sets UI interactivity. Disable to prevent data changing while uploading
     private fun setFormUiEnabled(isEnabled: Boolean) {

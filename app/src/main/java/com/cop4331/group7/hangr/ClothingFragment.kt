@@ -12,11 +12,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.constants.CATEGORIES
+import com.cop4331.group7.hangr.constants.CLOTHING_DB_STRING
+import com.cop4331.group7.hangr.constants.HANGR_DB_STRING
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -91,7 +92,7 @@ class ClothingFragment: Fragment() {
 
     // builds query and applies adapter to the recycler
     private fun setupRecyclerView() {
-        val clothesRef = db.collection(auth.currentUser!!.uid)
+        val clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
         val clothingItemQuery = FirebaseClothingItemQueryBuilder(clothesRef)
 
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
