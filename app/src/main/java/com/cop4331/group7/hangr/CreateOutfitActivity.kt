@@ -63,7 +63,7 @@ class CreateOutfitActivity : AppCompatActivity() {
         navigation_outfit.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         fab_add_to_outfit.setOnClickListener { openCategoryDialog() }
-        button_finish_outfit.setOnClickListener { finalizeOutfit() }
+        button_wear_outfit.setOnClickListener { wearOutfit() }
 
         setupRecyclerView()
     }
@@ -104,8 +104,8 @@ class CreateOutfitActivity : AppCompatActivity() {
         startActivityForResult(intent, 1)
     }
 
-    // account for each item being worn and return to closet
-    private fun finalizeOutfit() {
+    // account for each item being worn and return to closet gallery
+    private fun wearOutfit() {
         // TODO: for each clothing in outfit, decrement "wearsRemaining remaining" field
 
         // move to closet

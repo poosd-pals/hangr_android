@@ -25,6 +25,7 @@
         <activity
             android:name=".AddOrEditClothingActivity"
             android:parentActivityName=".ClosetGalleryActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".CreateOutfitActivity"
@@ -35,7 +36,8 @@
             android:label="@string/title_activity_new_clothes" />
         <activity
             android:name=".ClosetGalleryActivity"
-            android:label="@string/title_activity_closet_gallery" />
+            android:label="@string/title_activity_closet_gallery"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/hangr"

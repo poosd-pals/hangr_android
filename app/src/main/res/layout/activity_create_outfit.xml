@@ -8,6 +8,13 @@
 	android:layout_height="match_parent"
 	tools:context=".CreateOutfitActivity">
 
+	<ImageView
+		android:id="@+id/image_favorite_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"/>
+
 	<LinearLayout
 		android:id="@+id/layout_outfit_container"
 		android:layout_width="match_parent"
@@ -40,7 +47,17 @@
 	</LinearLayout>
 
 	<Button
-		android:id="@+id/button_finish_outfit"
+		android:id="@+id/button_save_outfit"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="16dp"
+		android:layout_marginBottom="16dp"
+		app:layout_constraintBottom_toTopOf="@id/navigation_outfit"
+		app:layout_constraintStart_toStartOf="parent"
+		android:text="Save"/>
+
+	<Button
+		android:id="@+id/button_wear_outfit"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginEnd="16dp"
