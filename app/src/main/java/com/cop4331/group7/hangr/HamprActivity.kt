@@ -4,9 +4,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
+import com.cop4331.group7.hangr.classes.FirebaseClothingItem
+import com.cop4331.group7.hangr.classes.GalleryAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_add_or_edit_clothing.view.*
+import kotlinx.android.synthetic.main.activity_closet_gallery.*
 import kotlinx.android.synthetic.main.activity_hampr.*
 
 class HamprActivity : AppCompatActivity() {
+
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var viewAdapter: GalleryAdapter
+
+
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -40,10 +56,31 @@ class HamprActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         button_edit.setOnClickListener { moveToEditClothing() }
+
+        setupRecyclerView()
     }
 
     private fun moveToEditClothing() {
         intent = Intent(this, AddOrEditClothingActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun setupRecyclerView() {
+        viewManager = GridLayoutManager(this@HamprActivity, 2)
+
+        // Need to figure out how to query firebase using some form of Where()-type method
+        // Where(article_of_clothing is dirty) ???
+        val query = db.collection(auth.currentUser!!.uid)
+        val dirtyClothes = query.whereEqualTo()
+        val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+            .setQuery(query, FirebaseClothingItem::class.java)
+            .build()
+
+        viewAdapter = GalleryAdapter(response)
+
+        recycler_gallery.apply {
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
     }
 }
