@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.terminator.ChipTerminatorHandler
 import hideKeyboard
 import kotlinx.android.synthetic.main.activity_add_or_edit_clothing.*
@@ -67,6 +68,11 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         nacho_colors.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
         nacho_tags.addChipTerminator('\n', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
         nacho_tags.addChipTerminator(',', ChipTerminatorHandler.BEHAVIOR_CHIPIFY_CURRENT_TOKEN)
+        val nachoOnFocusChangeListener = View.OnFocusChangeListener { view, isFocused ->
+            if (!isFocused && view is NachoTextView) { view.chipifyAllUnterminatedTokens() }
+        }
+        nacho_colors.onFocusChangeListener = nachoOnFocusChangeListener
+        nacho_tags.onFocusChangeListener = nachoOnFocusChangeListener
     }
 
     // initialize firebase instances
