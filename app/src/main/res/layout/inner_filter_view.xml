@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/inner_linear_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/inner_linear_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingStart="24dp"
+              android:paddingEnd="24dp">
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
@@ -20,9 +21,10 @@
 
 
     <android.support.design.chip.ChipGroup
-        android:id="@+id/filter_chip_group"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="12dp"/>
+            android:id="@+id/filter_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="12dp"
+            app:singleSelection="true"/>
 
 </LinearLayout>

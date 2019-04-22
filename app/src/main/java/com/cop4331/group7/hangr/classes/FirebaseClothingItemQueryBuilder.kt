@@ -4,7 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 
 class FirebaseClothingItemQueryBuilder(private val userDbRef: CollectionReference) {
-    private var categories = mutableListOf<String>()
+    var categories = mutableListOf<String>()
 
     fun addCategories(categories: List<String>) {
         this.categories.addAll(categories)
@@ -14,10 +14,15 @@ class FirebaseClothingItemQueryBuilder(private val userDbRef: CollectionReferenc
     }
 
     fun build() : Query {
-        var query = userDbRef.orderBy("dateCreated")
-        categories.forEach { query = query.whereEqualTo("category", it) }
-
-        return query
+        if (categories.count() > 0) {
+            var query = userDbRef.whereEqualTo("category", categories[0])
+            for (index in 1 until categories.count()) {
+                query = query.whereEqualTo("category", categories[index])
+            }
+            return query
+        } else {
+            return userDbRef
+        }
     }
 
 
