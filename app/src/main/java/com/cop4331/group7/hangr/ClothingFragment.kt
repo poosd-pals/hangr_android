@@ -20,7 +20,9 @@ import com.cop4331.group7.hangr.constants.CLOTHING_DB_STRING
 import com.cop4331.group7.hangr.constants.HANGR_DB_STRING
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_clothing.view.*
 import kotlinx.android.synthetic.main.inner_filter_view.view.*
 
@@ -31,17 +33,20 @@ class ClothingFragment: Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var queryBuilder: FirebaseClothingItemQueryBuilder
+    private lateinit var clothesRef: CollectionReference
 
     private lateinit var viewAdapter: GalleryAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var queryBuilder: FirebaseClothingItemQueryBuilder
+    private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.fragment_clothing, container, false)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        queryBuilder = FirebaseClothingItemQueryBuilder(db.collection(auth.currentUser!!.uid))
+        clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(
+            CLOTHING_DB_STRING)
+        queryBuilder = FirebaseClothingItemQueryBuilder(clothesRef)
 
         setFragmentState()
         initExpandableListeners()
@@ -92,11 +97,8 @@ class ClothingFragment: Fragment() {
 
     // builds query and applies adapter to the recycler
     private fun setupRecyclerView() {
-        val clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
-        val clothingItemQuery = FirebaseClothingItemQueryBuilder(clothesRef)
-
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-            .setQuery(clothingItemQuery.build(), FirebaseClothingItem::class.java)
+            .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
             .build()
 
         viewManager = GridLayoutManager(activity, 2)
