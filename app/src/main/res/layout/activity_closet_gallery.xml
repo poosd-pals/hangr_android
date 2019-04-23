@@ -19,15 +19,7 @@
         android:id="@+id/viewpager_gallery"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/navigation"
-        app:layout_constraintTop_toBottomOf="@id/tabs_gallery" />
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/navigation"/>
+        app:layout_constraintTop_toBottomOf="@id/tabs_gallery" />
 
 </android.support.constraint.ConstraintLayout>
