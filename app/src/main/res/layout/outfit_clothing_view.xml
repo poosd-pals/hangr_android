@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toEndOf="@id/image_clothing_in_outfit"
+            android:layout_marginLeft="16dp"
             android:fontFamily="@font/karla" />
     </RelativeLayout>
 

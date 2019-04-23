@@ -18,9 +18,15 @@ class OutfitAdapter(private val context: Context, private val outfit: MutableLis
     override fun onBindViewHolder(holder: OutfitClothingHolder, position: Int) {
         val clothingItem = outfit[position]
 
-        Glide.with(context)
-            .load(clothingItem?.imageUrl)
-            .into(holder.imageView)
+        if (clothingItem?.imageUrl.isNullOrBlank()) {
+            Glide.with(context).
+                load(R.drawable.image_placeholder)
+                .into(holder.imageView)
+        } else {
+            Glide.with(context)
+                .load(clothingItem?.imageUrl)
+                .into(holder.imageView)
+        }
 
         holder.name.text = clothingItem?.name
 

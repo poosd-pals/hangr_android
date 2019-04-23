@@ -71,28 +71,29 @@ class ClothingFragment: Fragment() {
         mView.filter_chip_group.isSingleSelection = false
 
         CATEGORIES.forEach {
-             val chip = Chip(activity)
-             chip.text = it
-             chip.isCheckable = true
-             chip.setOnCheckedChangeListener { button, isSelected ->
-                 if (isSelected)
-                     queryBuilder.addCategories(listOf(button.text as String))
-                 else
-                     queryBuilder.removeCategories(listOf(button.text as String))
+            val chip = Chip(activity)
+            chip.text = it
+            chip.isCheckable = true
 
-                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-                     .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
-                     .build()
+            chip.setOnCheckedChangeListener { button, isSelected ->
+                if (isSelected)
+                    queryBuilder.addCategories(listOf(button.text as String))
+                else
+                    queryBuilder.removeCategories(listOf(button.text as String))
 
-                 val viewAdapter = GalleryAdapter(activity as Activity, response, false)
-                 mView.recycler_gallery.adapter = viewAdapter
-                 viewAdapter.startListening()
-                 collapseFilter()
-             }
-             colors.addView(chip)
-             Log.d("whee", "created chip $it")
-         }
-         colors.isSingleSelection = true
+                val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+                    .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
+                    .build()
+
+                val viewAdapter = GalleryAdapter(activity as Activity, response, false)
+                mView.recycler_gallery.adapter = viewAdapter
+                viewAdapter.startListening()
+                collapseFilter()
+            }
+            colors.addView(chip)
+            Log.d("whee", "created chip $it")
+        }
+        colors.isSingleSelection = true
     }
 
     // builds query and applies adapter to the recycler

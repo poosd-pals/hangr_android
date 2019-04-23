@@ -108,7 +108,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             } else {
                 Glide
                     .with(this)
-                    .load(R.drawable.ic_add_a_photo_black_24dp)
+                    .load(R.drawable.image_placeholder)
                     .into(image_editing_clothing)
             }
 

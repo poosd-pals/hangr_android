@@ -60,10 +60,12 @@ class ClosetGalleryActivity: AppCompatActivity() {
 
         title = "  Welcome, " + auth.currentUser!!.displayName + "!"
         actionBar?.setDisplayUseLogoEnabled(true)
-        actionBar?.setLogo(R.drawable.ic_hangr_login)
+        actionBar?.setLogo(R.drawable.hangr_header)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setLogo(R.drawable.ic_hangr_login)
+        supportActionBar?.setLogo(R.drawable.hangr_header)
         supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
 
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true

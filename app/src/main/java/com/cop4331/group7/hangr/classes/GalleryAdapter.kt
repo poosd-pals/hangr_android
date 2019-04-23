@@ -45,7 +45,7 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
         } else {
             Glide
                 .with(holder.imageView.context)
-                .load(R.drawable.ic_add_a_photo_black_24dp)
+                .load(R.drawable.image_placeholder)
                 .into(holder.imageView)
         }
 
