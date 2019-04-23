@@ -68,10 +68,9 @@ class HamprActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         viewManager = GridLayoutManager(this@HamprActivity, 2)
 
-        // Need to figure out how to query firebase using some form of Where()-type method
-        // Where(article_of_clothing is dirty) ???
-        val query = db.collection(auth.currentUser!!.uid)
-        val dirtyClothes = query.whereEqualTo()
+
+        val query = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
+        val dirtyClothes = query.whereEqualTo("wearsRemaining", 0)
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
             .setQuery(query, FirebaseClothingItem::class.java)
             .build()
@@ -82,5 +81,7 @@ class HamprActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+
+        viewAdapter.startListening()
     }
 }
