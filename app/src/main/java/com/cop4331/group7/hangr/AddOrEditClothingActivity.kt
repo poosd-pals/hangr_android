@@ -118,7 +118,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             val index = CATEGORIES.indexOf(existingClothingItem.category)
             spinner_category.setSelection(if (index == -1) 0 else index + 1)
 
-            edit_clothing_wears.setText(existingClothingItem.wearsRemaining.toString())
+            edit_clothing_wears.setText(existingClothingItem.wearsLeft.toString())
 
             nacho_colors.setText(existingClothingItem.colors)
             nacho_tags.setText(existingClothingItem.tags)

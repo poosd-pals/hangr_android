@@ -106,7 +106,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     // account for each item being worn and return to closet gallery
     private fun wearOutfit() {
-        // TODO: for each clothing in outfit, decrement "wearsRemaining remaining" field
+        // TODO: for each clothing in outfit, decrement "wearsLeft remaining" field
 
         // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)
