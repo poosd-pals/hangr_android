@@ -21,7 +21,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toTopOf="@+id/navigation_outfit">
+		app:layout_constraintBottom_toTopOf="@id/button_save_outfit">
 
 		<ScrollView
 			android:layout_width="match_parent"
@@ -42,9 +42,10 @@
 			android:layout_gravity="center"
 			android:clickable="true"
 			android:focusable="true"
-			app:srcCompat="@android:drawable/ic_input_add"/>
+			app:srcCompat="@drawable/ic_add_white_24dp"/>
 
 	</LinearLayout>
+
 
 	<Button
 		android:id="@+id/button_save_outfit"
@@ -52,7 +53,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
 		android:layout_marginBottom="16dp"
-		app:layout_constraintBottom_toTopOf="@id/navigation_outfit"
+		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		android:text="Save"/>
 
@@ -64,7 +65,6 @@
 		android:layout_marginBottom="16dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		android:text="Finish Outfit"/>
-
+		android:text="Wear"/>
 
 </android.support.constraint.ConstraintLayout>

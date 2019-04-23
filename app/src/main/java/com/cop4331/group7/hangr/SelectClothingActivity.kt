@@ -10,7 +10,9 @@ import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.classes.OutfitAdapter
+import com.cop4331.group7.hangr.constants.CLOTHING_DB_STRING
 import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
+import com.cop4331.group7.hangr.constants.HANGR_DB_STRING
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -56,7 +58,7 @@ class SelectClothingActivity : AppCompatActivity() {
 
     // display clothing items filtered by "category"
     private fun setupRecyclerView() {
-        val clothesRef = db.collection(auth.currentUser!!.uid)
+        val clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
         val clothingItemQuery = FirebaseClothingItemQueryBuilder(clothesRef)
 
         // add category to filter

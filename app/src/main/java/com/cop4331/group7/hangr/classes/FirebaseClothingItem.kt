@@ -11,10 +11,10 @@ data class FirebaseClothingItem (
     val name: String = "",                      // user defined item name
     val category: String = "",                  // selected category
     val wearsTotal: Int = 0,                    // wears before considered dirty
-    var wearsLeft: Int = -1,                    // active wears remaining
+    val wearsLeft: Int = -1,                    // active wears remaining
     val colors: List<String> = emptyList(),     // colors of item
     val tags: List<String> = emptyList(),       // user-defined tags
     val imageUrl: String = "",
     val imageFilename: String = "",
     @ServerTimestamp val dateCreated: Timestamp? = null
-) : Parcelable
+): Parcelable

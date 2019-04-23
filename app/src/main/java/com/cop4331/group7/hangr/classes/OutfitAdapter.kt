@@ -13,19 +13,19 @@ import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.R
 import kotlinx.android.synthetic.main.outfit_clothing_view.view.*
 
-class OutfitAdapter(private val context: Context, private val outfit: MutableList<FirebaseClothingItem?>):
+class OutfitAdapter(private val context: Context, private val outfit: MutableList<FirebaseClothingItem>):
     RecyclerView.Adapter<OutfitAdapter.OutfitClothingHolder>() {
     override fun onBindViewHolder(holder: OutfitClothingHolder, position: Int) {
         val clothingItem = outfit[position]
 
         Glide.with(context)
-            .load(clothingItem?.imageUrl)
+            .load(clothingItem.imageUrl)
             .into(holder.imageView)
 
-        holder.name.text = clothingItem?.name
+        holder.name.text = clothingItem.name
 
         holder.parentLayout.setOnClickListener {
-            Toast.makeText(context, clothingItem?.name, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, clothingItem.name, Toast.LENGTH_LONG).show()
         }
     }
 

@@ -1,22 +1,23 @@
 package com.cop4331.group7.hangr
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.EditText
 import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
+import com.cop4331.group7.hangr.classes.FirebaseOutfitItem
 import com.cop4331.group7.hangr.classes.OutfitAdapter
-import com.cop4331.group7.hangr.constants.CATEGORIES
-import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
-import com.cop4331.group7.hangr.constants.SELECTED_OUTFIT
+import com.cop4331.group7.hangr.constants.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_outfit.*
+import java.lang.Exception
 
 class CreateOutfitActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -25,7 +26,8 @@ class CreateOutfitActivity : AppCompatActivity() {
     private var viewAdapter: OutfitAdapter? = null
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    private var outfit = mutableListOf<FirebaseClothingItem?>()
+    private var clothingReferences = mutableListOf<FirebaseClothingItem>()
+    private var clothingKeys = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +36,18 @@ class CreateOutfitActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         title = "Assemble an Outfit!"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         fab_add_to_outfit.setOnClickListener { openCategoryDialog() }
         button_wear_outfit.setOnClickListener { wearOutfit() }
+        button_save_outfit.setOnClickListener { saveOutfit() }
 
         setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         viewManager = LinearLayoutManager(this@CreateOutfitActivity)
-        viewAdapter = OutfitAdapter(this, outfit)
+        viewAdapter = OutfitAdapter(this, clothingReferences)
 
         recycler_outfit.apply {
             layoutManager = viewManager
@@ -79,7 +83,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     // account for each item being worn and return to closet gallery
     private fun wearOutfit() {
-        // TODO: for each clothing in outfit, decrement "wearsLeft remaining" field
+        // TODO: for each clothing in clothingReferences, decrement "wearsLeft remaining" field
 
         // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)
@@ -87,14 +91,43 @@ class CreateOutfitActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun saveOutfit() {
+        val name = openNameDialog()
+        val isFavorite = false
+        saveOutfitToFirebase(name, isFavorite)
+    }
+
+    private fun openNameDialog(): String {
+
+        return "potato"
+    }
+
+    private fun saveOutfitToFirebase(outfitName: String, isFavorite: Boolean) {
+        val outfitItem = FirebaseOutfitItem(
+            outfitName,
+            isFavorite,
+            clothingKeys as List<String>
+        )
+
+        with(db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(OUTFITS_DB_STRING)) {
+            add(outfitItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception) }
+        }
+    }
+
+    private fun handleFailure(e: Exception?) {
+        Toast.makeText(this, "Better luck next time, bud!", Toast.LENGTH_LONG).show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data!!.hasExtra(SELECTED_OUTFIT)) {
-                    val clothing = data.extras?.getParcelable<FirebaseClothingItem>(SELECTED_OUTFIT)
-                    outfit.add(clothing)
+                    val clothing = data.extras?.getParcelable<FirebaseClothingItem>(SELECTED_OUTFIT)!!
+                    clothingReferences.add(clothing)
+                    val clothingKey = data.extras?.getString(EXISTING_CLOTHING_ITEM_PARENT_ID)!!
+                    clothingKeys.add(clothingKey)
 
-                    Toast.makeText(this, "Item name: " + clothing?.name + ". Outfit size: " + outfit.size, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Item name: " + clothing?.name + ". Outfit size: " + clothingReferences.size, Toast.LENGTH_LONG).show()
                     updateRecycler()
                 } else {
                     Toast.makeText(this, "putExtra failed", Toast.LENGTH_LONG).show()

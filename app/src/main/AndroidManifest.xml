@@ -30,6 +30,7 @@
         <activity
             android:name=".CreateOutfitActivity"
             android:label="@string/title_activity_create_outfit"
+            android:parentActivityName=".ClosetGalleryActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".HamprActivity"

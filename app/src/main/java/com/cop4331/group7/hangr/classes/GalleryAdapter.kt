@@ -57,6 +57,10 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
                 val returnIntent = Intent()
 
                 returnIntent.putExtra(SELECTED_OUTFIT, model)
+                with (snapshots.getSnapshot(holder.adapterPosition)) {
+                    returnIntent.putExtra(EXISTING_CLOTHING_ITEM_PARENT_ID, this.id)
+                }
+
                 mActivity.setResult(Activity.RESULT_OK, returnIntent)
 
                 (it.context as SelectClothingActivity).finish()
