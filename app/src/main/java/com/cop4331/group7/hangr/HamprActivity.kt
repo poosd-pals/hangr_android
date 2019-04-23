@@ -8,36 +8,11 @@ import kotlinx.android.synthetic.main.activity_hampr.*
 
 class HamprActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_hampr -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_gallery -> {
-                val intent = Intent(this@HamprActivity, ClosetGalleryActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_outfit -> {
-                val intent = Intent(this@HamprActivity, CreateOutfitActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hampr)
 
         text_clothes.text = "Hampr Activity"
-        navigation_hampr.menu.getItem(0).isChecked = true
-        navigation_hampr.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         button_edit.setOnClickListener { moveToEditClothing() }
     }

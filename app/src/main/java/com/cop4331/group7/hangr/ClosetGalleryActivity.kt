@@ -16,32 +16,6 @@ import kotlinx.android.synthetic.main.activity_closet_gallery.*
 class ClosetGalleryActivity: AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
-    // this screen is the center icon on the bottom nav bar
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            // move to hampr
-            R.id.navigation_hampr -> {
-                val intent = Intent(this@ClosetGalleryActivity, HamprActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_gallery -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            // move to outfit assembly
-            R.id.navigation_outfit -> {
-                val intent = Intent(this@ClosetGalleryActivity, CreateOutfitActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
     override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
         setContentView(R.layout.activity_closet_gallery)
@@ -59,10 +33,6 @@ class ClosetGalleryActivity: AppCompatActivity() {
         tabs_gallery.setupWithViewPager(viewpager_gallery)
 
         title = "Welcome, " + auth.currentUser!!.displayName + "!"
-
-        // get navigation view and set current item to checked
-        navigation.menu.getItem(1).isChecked = true
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
     // inflates options menu to logout
@@ -78,6 +48,11 @@ class ClosetGalleryActivity: AppCompatActivity() {
         return when (item.itemId) {
             R.id.actionbar_logout -> {
                 handleLogout()
+                return true
+            }
+            R.id.actionbar_hampr -> {
+                val intent = Intent(this, HamprActivity::class.java)
+                startActivity(intent)
                 return true
             }
             else -> super.onOptionsItemSelected(item)

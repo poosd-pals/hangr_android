@@ -27,30 +27,6 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     private var outfit = mutableListOf<FirebaseClothingItem?>()
 
-    // go to specified activity when navigation button is pressed
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_hampr -> {
-                val intent = Intent(this@CreateOutfitActivity, HamprActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_gallery -> {
-                val intent = Intent(this@CreateOutfitActivity, ClosetGalleryActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right)
-                finish()
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_outfit -> {
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_outfit)
@@ -58,9 +34,6 @@ class CreateOutfitActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         title = "Assemble an Outfit!"
-
-        navigation_outfit.menu.getItem(2).isChecked = true
-        navigation_outfit.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         fab_add_to_outfit.setOnClickListener { openCategoryDialog() }
         button_wear_outfit.setOnClickListener { wearOutfit() }
