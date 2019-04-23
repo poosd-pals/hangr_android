@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -34,6 +35,7 @@ import java.io.File
 class AddOrEditClothingActivity : AppCompatActivity() {
     private lateinit var currentUser: FirebaseUser
     private lateinit var db: FirebaseFirestore
+    private lateinit var clothesRef: CollectionReference
     private lateinit var storage: StorageReference
 
     private var isEditingClothingItem = false
@@ -79,6 +81,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private fun initFirebase() {
         currentUser = FirebaseAuth.getInstance().currentUser!!
         db = FirebaseFirestore.getInstance()
+        clothesRef = db.collection(HANGR_DB_STRING).document(currentUser.uid).collection(CLOTHING_DB_STRING)
         storage = FirebaseStorage.getInstance().reference
     }
 
@@ -149,6 +152,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
     // call deletion helps depending on uid and image state
     private fun deleteClothingItem() {
+        setFormUiEnabled(false)
         if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID))
             Toast.makeText(this, "Cannot find item to delete!", Toast.LENGTH_LONG).show()
         else if (!previousImageStorageFilename.isNullOrBlank())
@@ -160,7 +164,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     // removes clothing item from database and returns to main gallery
     private fun removeCurrentItemFromFirebase() {
         val documentId = intent.getStringExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)
-        db.collection(currentUser.uid).document(documentId).delete().addOnCompleteListener {
+        clothesRef.document(documentId).delete().addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Successfully deleted item!", Toast.LENGTH_SHORT).show()
                 finish()

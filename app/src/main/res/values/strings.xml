@@ -34,7 +34,6 @@
 	<string name="hampr">Hampr</string>
 	<string name="save">Save</string>
 	<string name="cancel">Cancel</string>
-	3
 	<string name="delete">Delete</string>
 	<string name="uploading_image_percentage">uploading image… %1$d%%</string>
 	<string name="finish">Finish</string>
@@ -45,6 +44,6 @@
 	<string name="colors">Colors</string>
 	<string name="tags">Tags</string>
 	<string name="filter">Filter</string>
-	<string name="filter_prompt">Filter…</string>
+	<string name="filter_prompt">Filter By…</string>
 	<string name="categories">Categories</string>
 </resources>

@@ -3,17 +3,14 @@ package com.cop4331.group7.hangr
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.chip.Chip
-import android.support.design.chip.ChipGroup
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
-import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.cop4331.group7.hangr.constants.CLOTHING_DB_STRING
@@ -24,7 +21,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_clothing.view.*
-import kotlinx.android.synthetic.main.inner_filter_view.view.*
 
 // displays user's existing clothing items
 // starts activity to add or edit clothing items
@@ -33,7 +29,6 @@ class ClothingFragment: Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var queryBuilder: FirebaseClothingItemQueryBuilder
     private lateinit var clothesRef: CollectionReference
 
     private lateinit var viewAdapter: GalleryAdapter
@@ -46,59 +41,55 @@ class ClothingFragment: Fragment() {
         db = FirebaseFirestore.getInstance()
         clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(
             CLOTHING_DB_STRING)
-        queryBuilder = FirebaseClothingItemQueryBuilder(clothesRef)
 
         setFragmentState()
-        initExpandableListeners()
+        initSpinner()
 
         return mView
     }
 
+    private fun initSpinner() {
+        val categories = mutableListOf<String>()
+        categories.addAll(CATEGORIES)
+        categories.add(0, "All")
+
+        val adapter = ArrayAdapter(mView.context, android.R.layout.simple_spinner_item, categories)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        mView.spinner_filter.adapter = adapter
+
+        mView.spinner_filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val category = parent!!.adapter.getItem(position)
+                var query: Query
+                if (position == 0)
+                    query = clothesRef
+                else
+                    query = clothesRef.whereEqualTo("category", category)
+
+                val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
+                    .setQuery(query, FirebaseClothingItem::class.java)
+                    .build()
+
+                viewAdapter = GalleryAdapter(activity as Activity, response, false)
+
+                mView.recycler_gallery.adapter = viewAdapter
+                viewAdapter.startListening()
+            }
+        }
+    }
+
     private fun setFragmentState() {
         mView.fab_add_clothes.setOnClickListener { createNewClothingItem() }
-        // TODO: this doesn't work?
-        mView.recycler_gallery.setOnClickListener { collapseFilter() }
         setupRecyclerView()
-    }
-
-    private fun collapseFilter() {
-        mView.expand_filter.collapse()
-    }
-
-    // inflates filter menu
-    private fun initExpandableListeners() {
-        val colors: ChipGroup = mView.filter_chip_group
-        mView.filter_chip_group.isSingleSelection = false
-
-        CATEGORIES.forEach {
-             val chip = Chip(activity)
-             chip.text = it
-             chip.isCheckable = true
-             chip.setOnCheckedChangeListener { button, isSelected ->
-                 if (isSelected)
-                     queryBuilder.addCategories(listOf(button.text as String))
-                 else
-                     queryBuilder.removeCategories(listOf(button.text as String))
-
-                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-                     .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
-                     .build()
-
-                 val viewAdapter = GalleryAdapter(activity as Activity, response, false)
-                 mView.recycler_gallery.adapter = viewAdapter
-                 viewAdapter.startListening()
-                 collapseFilter()
-             }
-             colors.addView(chip)
-             Log.d("whee", "created chip $it")
-         }
-         colors.isSingleSelection = true
     }
 
     // builds query and applies adapter to the recycler
     private fun setupRecyclerView() {
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-            .setQuery(queryBuilder.build(), FirebaseClothingItem::class.java)
+            .setQuery(clothesRef, FirebaseClothingItem::class.java)
             .build()
 
         viewManager = GridLayoutManager(activity, 2)

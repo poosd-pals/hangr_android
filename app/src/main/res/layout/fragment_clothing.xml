@@ -5,16 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.alespero.expandablecardview.ExpandableCardView
-        android:id="@+id/expand_filter"
+    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+        android:id="@+id/spinner_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/filter_prompt"
-        app:inner_view="@layout/inner_filter_view"
-        app:expandOnClick="true"
-        app:animationDuration="300"
-        app:startExpanded="false"/>
+        app:smsp_hint="@string/filter_prompt" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_gallery"
@@ -22,7 +20,7 @@
         android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expand_filter"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinner_filter"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_clothes"
