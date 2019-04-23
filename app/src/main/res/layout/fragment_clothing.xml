@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,12 +10,12 @@
         android:id="@+id/expand_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/filter_prompt"
-        app:inner_view="@layout/inner_filter_view"
-        app:expandOnClick="true"
         app:animationDuration="300"
-        app:startExpanded="false"/>
+        app:expandOnClick="true"
+        app:inner_view="@layout/inner_filter_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startExpanded="false"
+        app:title="@string/filter_prompt" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_gallery"

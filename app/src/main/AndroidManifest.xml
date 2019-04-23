@@ -37,6 +37,7 @@
         <activity
             android:name=".ClosetGalleryActivity"
             android:label="@string/title_activity_closet_gallery"
+	        android:logo="@drawable/ic_add_a_photo_black_24dp"
             android:launchMode="singleTop"/>
         <activity
             android:name=".RegisterActivity"
@@ -52,6 +53,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

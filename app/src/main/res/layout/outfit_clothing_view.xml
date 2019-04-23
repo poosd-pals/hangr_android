@@ -21,8 +21,9 @@
             android:id="@+id/text_outfit_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_toEndOf="@id/image_clothing_in_outfit"
-            android:layout_centerInParent="true"/>
+            android:fontFamily="@font/karla" />
     </RelativeLayout>
 
 </LinearLayout>

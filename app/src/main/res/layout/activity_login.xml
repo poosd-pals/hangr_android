@@ -19,10 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:fontFamily="@font/karla"
             android:gravity="center"
             android:text="@string/welcome"
-            android:textSize="30sp"
-            android:textColor="#333333"/>
+            android:textColor="#333333"
+            android:textSize="30sp" />
 
     </RelativeLayout>
 
@@ -42,9 +43,10 @@
                 android:id="@+id/field_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:fontFamily="@font/karla"
                 android:hint="@string/prompt_email"
-                tools:ignore="Autofill"/>
+                android:inputType="textEmailAddress"
+                tools:ignore="Autofill" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -57,29 +59,38 @@
                 android:id="@+id/field_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
+                android:fontFamily="@font/karla"
                 android:hint="@string/password"
-                tools:ignore="Autofill"/>
+                android:inputType="textPassword"
+                tools:ignore="Autofill" />
 
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/button_login"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/log_in"/>
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/karla"
+            android:text="@string/log_in"
+            android:textStyle="bold" />
+
         <Button
-            android:text="@string/don_t_have_an_account"
+            android:id="@+id/button_register"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_register"/>
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/karla"
+            android:text="@string/don_t_have_an_account"
+            android:textStyle="bold" />
 
 			  <!-- TODO: Temporary to bypass login screen -->
         <Button
             android:id="@+id/button_bypass"
-            android:text="@string/bypass_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/karla"
+            android:text="@string/bypass_login"
+            android:textStyle="bold" />
         <ProgressBar
             android:id="@+id/indeterminateBar"
             android:layout_width="match_parent"

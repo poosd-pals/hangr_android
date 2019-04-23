@@ -58,7 +58,12 @@ class ClosetGalleryActivity: AppCompatActivity() {
         viewpager_gallery.adapter = fragmentAdapter
         tabs_gallery.setupWithViewPager(viewpager_gallery)
 
-        title = "Welcome, " + auth.currentUser!!.displayName + "!"
+        title = "  Welcome, " + auth.currentUser!!.displayName + "!"
+        actionBar?.setDisplayUseLogoEnabled(true)
+        actionBar?.setLogo(R.drawable.ic_hangr_login)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setLogo(R.drawable.ic_hangr_login)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
 
         // get navigation view and set current item to checked
         navigation.menu.getItem(1).isChecked = true

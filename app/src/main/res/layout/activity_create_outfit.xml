@@ -52,9 +52,11 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="16dp"
 		android:layout_marginBottom="16dp"
+		android:fontFamily="@font/karla"
+		android:text="Save"
+		android:textStyle="bold"
 		app:layout_constraintBottom_toTopOf="@id/navigation_outfit"
-		app:layout_constraintStart_toStartOf="parent"
-		android:text="Save"/>
+		app:layout_constraintStart_toStartOf="parent" />
 
 	<Button
 		android:id="@+id/button_wear_outfit"
@@ -62,9 +64,11 @@
 		android:layout_height="wrap_content"
 		android:layout_marginEnd="16dp"
 		android:layout_marginBottom="16dp"
+		android:fontFamily="@font/karla"
+		android:text="Wear"
+		android:textStyle="bold"
 		app:layout_constraintBottom_toTopOf="@id/navigation_outfit"
-		app:layout_constraintEnd_toEndOf="parent"
-		android:text="Finish Outfit"/>
+		app:layout_constraintEnd_toEndOf="parent" />
 
 	<android.support.design.widget.BottomNavigationView
 		android:id="@+id/navigation_outfit"

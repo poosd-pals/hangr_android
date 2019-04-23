@@ -8,12 +8,13 @@
 	android:padding="16dp">
 
 	<TextView
+		android:id="@+id/text_placeholder"
 		android:layout_width="match_parent"
 		android:layout_height="40dp"
-		android:textAlignment="center"
+		android:fontFamily="@font/karla"
 		android:text="filler"
-		android:textSize="17sp"
-		android:id="@+id/text_placeholder"/>
+		android:textAlignment="center"
+		android:textSize="17sp" />
 
 	<ImageView
 		android:id="@+id/image_view"

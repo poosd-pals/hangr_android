@@ -8,14 +8,16 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     tools:context=".AddOrEditClothingActivity"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@color/background">
 
 
     <LinearLayout
         android:id="@+id/nested_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/background">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constrained_view"
@@ -53,9 +55,10 @@
                         android:id="@+id/edit_clothing_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
+                        android:fontFamily="@font/karla"
+                        android:importantForAutofill="no"
                         android:inputType="text"
-                        android:importantForAutofill="no"/>
+                        android:maxLines="1" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -86,6 +89,7 @@
                     android:id="@+id/edit_clothing_wears"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/karla"
                     android:gravity="top|left"
                     android:hint="@string/wears_before_wash"
                     android:inputType="number" />
@@ -104,7 +108,8 @@
                     android:id="@+id/nacho_colors"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="0dp" />
+                    android:layout_margin="0dp"
+                    android:fontFamily="@font/karla" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -117,7 +122,8 @@
                 <com.hootsuite.nachos.NachoTextView
                     android:id="@+id/nacho_tags"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/karla" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -158,17 +164,21 @@
                 android:id="@+id/button_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:fontFamily="@font/karla"
+                android:text="@string/delete"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@string/delete" />
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <Button
                 android:id="@+id/button_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
+                android:fontFamily="@font/karla"
+                android:text="@string/finish"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@string/finish" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -16,14 +16,15 @@
         android:orientation="vertical"
         android:id="@+id/layout">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/register"
-        android:textSize="30sp"
-        android:textColor="#333333"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/karla"
+            android:gravity="center"
+            android:text="@string/register"
+            android:textColor="#333333"
+            android:textSize="30sp" />
 
     </RelativeLayout>
 
@@ -43,9 +44,10 @@
                 android:id="@+id/field_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:fontFamily="@font/karla"
                 android:hint="@string/prompt_email"
-                tools:ignore="Autofill"/>
+                android:inputType="textEmailAddress"
+                tools:ignore="Autofill" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -58,9 +60,10 @@
                 android:id="@+id/field_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:fontFamily="@font/karla"
                 android:hint="@string/first_name"
-                tools:ignore="Autofill"/>
+                android:inputType="textPersonName"
+                tools:ignore="Autofill" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -73,24 +76,29 @@
                 android:id="@+id/field_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
+                android:fontFamily="@font/karla"
                 android:hint="@string/password"
-                tools:ignore="Autofill"/>
+                android:inputType="textPassword"
+                tools:ignore="Autofill" />
 
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/button_register"
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register"/>
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/karla"
+            android:text="@string/register"
+            android:textStyle="bold" />
 
         <Button
-            android:text="@string/already_have_an_account"
+            android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_login"/>
+            android:fontFamily="@font/karla"
+            android:text="@string/already_have_an_account"
+            android:textStyle="bold" />
 
         <ProgressBar
             android:id="@+id/indeterminateBar"

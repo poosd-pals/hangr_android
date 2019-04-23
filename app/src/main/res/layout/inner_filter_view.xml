@@ -9,10 +9,11 @@
               android:paddingEnd="24dp">
 
     <android.support.v7.widget.AppCompatTextView
+        style="@style/Base.DialogWindowTitle.AppCompat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.DialogWindowTitle.AppCompat"
-        android:text="@string/categories"/>
+        android:text="@string/categories"
+        app:fontFamily="@font/karla" />
 
     <View
         android:layout_width="match_parent"
