@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.R
 import kotlinx.android.synthetic.main.outfit_clothing_view.view.*
 
-class OutfitAdapter(private val context: Context, private val outfit: MutableList<FirebaseClothingItem>):
-    RecyclerView.Adapter<OutfitAdapter.OutfitClothingHolder>() {
+class AssembleOutfitAdapter(private val context: Context, private val outfit: MutableList<FirebaseClothingItem>):
+    RecyclerView.Adapter<AssembleOutfitAdapter.OutfitClothingHolder>() {
     override fun onBindViewHolder(holder: OutfitClothingHolder, position: Int) {
         val clothingItem = outfit[position]
 

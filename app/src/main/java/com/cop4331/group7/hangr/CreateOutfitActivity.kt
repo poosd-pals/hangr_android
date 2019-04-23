@@ -1,18 +1,16 @@
 package com.cop4331.group7.hangr
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.widget.EditText
 import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseOutfitItem
-import com.cop4331.group7.hangr.classes.OutfitAdapter
+import com.cop4331.group7.hangr.classes.AssembleOutfitAdapter
 import com.cop4331.group7.hangr.constants.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +21,7 @@ class CreateOutfitActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private var viewAdapter: OutfitAdapter? = null
+    private var viewAdapter: AssembleOutfitAdapter? = null
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     private var clothingReferences = mutableListOf<FirebaseClothingItem>()
@@ -47,7 +45,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         viewManager = LinearLayoutManager(this@CreateOutfitActivity)
-        viewAdapter = OutfitAdapter(this, clothingReferences)
+        viewAdapter = AssembleOutfitAdapter(this, clothingReferences)
 
         recycler_outfit.apply {
             layoutManager = viewManager
