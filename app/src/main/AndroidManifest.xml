@@ -37,7 +37,7 @@
         <activity
             android:name=".ClosetGalleryActivity"
             android:label="@string/title_activity_closet_gallery"
-	        android:logo="@drawable/hangr_header"
+	        android:logo="@drawable/header_hangr"
             android:launchMode="singleTop"/>
         <activity
             android:name=".RegisterActivity"

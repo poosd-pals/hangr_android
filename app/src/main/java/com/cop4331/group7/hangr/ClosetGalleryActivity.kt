@@ -60,9 +60,9 @@ class ClosetGalleryActivity: AppCompatActivity() {
 
         title = "  Welcome, " + auth.currentUser!!.displayName + "!"
         actionBar?.setDisplayUseLogoEnabled(true)
-        actionBar?.setLogo(R.drawable.hangr_header)
+        actionBar?.setLogo(R.drawable.header_hangr)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setLogo(R.drawable.hangr_header)
+        supportActionBar?.setLogo(R.drawable.header_hangr)
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
