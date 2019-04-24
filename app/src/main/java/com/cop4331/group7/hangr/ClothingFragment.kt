@@ -30,6 +30,7 @@ class ClothingFragment: Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var clothesRef: CollectionReference
+    private lateinit var baseQuery: Query
 
     private lateinit var viewAdapter: GalleryAdapter
     private lateinit var viewManager: GridLayoutManager
@@ -41,6 +42,7 @@ class ClothingFragment: Fragment() {
         db = FirebaseFirestore.getInstance()
         clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(
             CLOTHING_DB_STRING)
+        baseQuery = clothesRef.whereGreaterThan("wearsLeft", 0)
 
         setFragmentState()
         initSpinner()
@@ -63,11 +65,11 @@ class ClothingFragment: Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val category = parent!!.adapter.getItem(position)
-                var query: Query
+                val query: Query
                 if (position == 0)
-                    query = clothesRef
+                    query = baseQuery
                 else
-                    query = clothesRef.whereEqualTo("category", category)
+                    query = baseQuery.whereEqualTo("category", category)
 
                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
                     .setQuery(query, FirebaseClothingItem::class.java)
@@ -89,7 +91,7 @@ class ClothingFragment: Fragment() {
     // builds query and applies adapter to the recycler
     private fun setupRecyclerView() {
         val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
-            .setQuery(clothesRef, FirebaseClothingItem::class.java)
+            .setQuery(baseQuery, FirebaseClothingItem::class.java)
             .build()
 
         viewManager = GridLayoutManager(activity, 2)
