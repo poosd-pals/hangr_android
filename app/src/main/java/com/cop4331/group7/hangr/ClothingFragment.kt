@@ -42,7 +42,8 @@ class ClothingFragment: Fragment() {
         db = FirebaseFirestore.getInstance()
         clothesRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(
             CLOTHING_DB_STRING)
-        baseQuery = clothesRef.whereGreaterThan("wearsLeft", 0)
+        baseQuery = clothesRef
+//      baseQuery = clothesRef.whereGreaterThan("wearsLeft", 0)
 
         setFragmentState()
         initSpinner()
