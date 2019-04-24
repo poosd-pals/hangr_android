@@ -8,18 +8,19 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import com.cop4331.group7.hangr.classes.AssembleOutfitAdapter
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseOutfitItem
-import com.cop4331.group7.hangr.classes.AssembleOutfitAdapter
 import com.cop4331.group7.hangr.constants.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_outfit.*
-import java.lang.Exception
 
 class CreateOutfitActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var clothingRef: CollectionReference
 
     private var viewAdapter: AssembleOutfitAdapter? = null
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -33,6 +34,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        clothingRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
         title = "Assemble an Outfit!"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -65,9 +67,11 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     // account for each item being worn and return to closet gallery
     private fun wearOutfit() {
-        // TODO: for each clothing in clothingReferences, decrement "wearsLeft remaining" field
+        for (index in 0 until clothingReferences.count()) {
+            val wears = clothingReferences[index].wearsLeft - 1
+            clothingRef.document(clothingKeys[index]).update(mapOf("wearsLeft" to wears))
+        }
 
-        // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)
         startActivity(intent)
         finish()
