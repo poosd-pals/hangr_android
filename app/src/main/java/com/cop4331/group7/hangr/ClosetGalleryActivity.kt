@@ -32,7 +32,16 @@ class ClosetGalleryActivity: AppCompatActivity() {
         viewpager_gallery.adapter = fragmentAdapter
         tabs_gallery.setupWithViewPager(viewpager_gallery)
 
-        title = "Welcome, " + auth.currentUser!!.displayName + "!"
+        if (auth.currentUser!!.displayName.isNullOrBlank())
+            title = "  User's Closet"
+        else
+            title = "  " + auth.currentUser!!.displayName + "'s Closet"
+
+        actionBar?.setDisplayUseLogoEnabled(true)
+        actionBar?.setLogo(R.drawable.header_hangr)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setLogo(R.drawable.header_hangr)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
     }
 
     // inflates options menu to logout

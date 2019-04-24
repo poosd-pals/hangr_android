@@ -40,14 +40,14 @@ class OutfitsAdapter(private val context: Context, private val options: Firestor
                     else {
                         Glide
                             .with(imageview_ref[i].context)
-                            .load(R.drawable.ic_add_a_photo_black_24dp)
+                            .load(R.drawable.image_placeholder)
                             .into(imageview_ref[i])
                     }
                 }
             } else {
                 Glide
                     .with(imageview_ref[i].context)
-                    .load(R.drawable.ic_add_a_photo_black_24dp)
+                    .load(R.drawable.image_placeholder)
                     .into(imageview_ref[i])
             }
         }

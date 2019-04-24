@@ -85,7 +85,7 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     private fun openNameDialog(): String {
 
-        return "potato"
+        return "Casual Friday"
     }
 
     private fun saveOutfitToFirebase(outfitName: String, isFavorite: Boolean) {

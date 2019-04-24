@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.classes.CreateCircularDrawable
@@ -87,7 +88,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
     // initialize dropdown menu
     private fun initSpinner() {
-        spinner_category.setItems<String>(CATEGORIES)
+        spinner_category.adapter = ArrayAdapter<String>(this, R.layout.spinner_inflator, CATEGORIES)
         spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, id: Long) { category = CATEGORIES[position] }
             override fun onNothingSelected(adapterView: AdapterView<*>) { category = null }
@@ -98,6 +99,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private fun setActivityStateEditOrNew() {
         if (intent.hasExtra(EXISTING_CLOTHING_ITEM_DATA)) {
             // editing item
+            title = "Edit Clothing"
+
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
             this.previousClothingItem = existingClothingItem
 
@@ -111,7 +114,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             } else {
                 Glide
                     .with(this)
-                    .load(R.drawable.ic_add_a_photo_black_24dp)
+                    .load(R.drawable.image_placeholder)
                     .into(image_editing_clothing)
             }
 
@@ -127,6 +130,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
             nacho_tags.setText(existingClothingItem.tags)
         } else {
             // existing item
+            title = "Add Clothing"
             button_delete.isClickable = false
             button_delete.visibility = View.INVISIBLE
         }
