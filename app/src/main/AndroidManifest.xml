@@ -34,7 +34,9 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".HamprActivity"
-            android:label="@string/title_activity_new_clothes" />
+            android:label="@string/hampr"
+            android:parentActivityName=".ClosetGalleryActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ClosetGalleryActivity"
             android:label="@string/title_activity_closet_gallery"
