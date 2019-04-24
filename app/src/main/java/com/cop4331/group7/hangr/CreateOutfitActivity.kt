@@ -83,12 +83,11 @@ class CreateOutfitActivity : AppCompatActivity() {
 
     // account for each item being worn and return to closet gallery
     private fun wearOutfit() {
-        for (index in 0..clothingReferences.count()) {
+        for (index in 0 until clothingReferences.count()) {
             val wears = clothingReferences[index].wearsLeft - 1
             clothingRef.document(clothingKeys[index]).update(mapOf("wearsLeft" to wears))
         }
 
-        // move to closet
         intent = Intent(this, ClosetGalleryActivity::class.java)
         startActivity(intent)
         finish()
