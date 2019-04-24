@@ -1,7 +1,6 @@
 package com.cop4331.group7.hangr
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -56,8 +55,9 @@ class ClothingFragment: Fragment() {
         categories.addAll(CATEGORIES)
         categories.add(0, "All")
 
-        mView.spinner_filter.adapter = ArrayAdapter<String>(this.context as Context, R.layout.spinner_inflator, CATEGORIES)
-
+        val aa = ArrayAdapter(mView.context, android.R.layout.simple_spinner_item, categories)
+        aa.setDropDownViewResource(R.layout.spinner_inflator)
+        mView.spinner_filter.adapter = aa
         mView.spinner_filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
