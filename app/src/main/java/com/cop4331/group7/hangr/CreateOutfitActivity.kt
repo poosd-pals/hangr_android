@@ -36,7 +36,7 @@ class CreateOutfitActivity : AppCompatActivity() {
         title = "Assemble an Outfit!"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        fab_add_to_outfit.setOnClickListener { openCategoryDialog() }
+        fab_add_to_outfit.setOnClickListener { selectClothingItem() }
         button_wear_outfit.setOnClickListener { wearOutfit() }
         button_save_outfit.setOnClickListener { saveOutfit() }
 
@@ -57,25 +57,9 @@ class CreateOutfitActivity : AppCompatActivity() {
         viewAdapter!!.notifyDataSetChanged()
     }
 
-    // prompt user which category they want to search for
-    private fun openCategoryDialog() {
-        // popup menu
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Select a category...")
-            .setItems(
-                CATEGORIES.toTypedArray() ) { _, i ->
-                selectClothingItemWithCategory(CATEGORIES[i])
-            }
-            .create()
-
-        dialog.show()
-    }
-
-    // starts activity, passing the category as extra
-    private fun selectClothingItemWithCategory(category: String) {
-        // open gallery filtered by category
+    // starts activity for choosing clothing items
+    private fun selectClothingItem() {
         val intent = Intent(this, SelectClothingActivity::class.java)
-        intent.putExtra(DESIRED_CATEGORY, category)
         startActivityForResult(intent, 1)
     }
 
