@@ -8,19 +8,23 @@
 	android:layout_height="match_parent"
 	tools:context=".CreateOutfitActivity">
 
-	<ImageView
-		android:id="@+id/image_favorite_icon"
-		android:layout_width="wrap_content"
+	<EditText
+		android:id="@+id/edit_outfit_name"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"/>
+		app:layout_constraintBottom_toTopOf="@id/recycler_outfit"
+		android:layout_margin="16dp"
+		android:hint="Outfit Name"
+		android:fontFamily="@font/karla"
+		android:textSize="24sp"/>
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_outfit"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_marginBottom="16dp"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/edit_outfit_name"
 		app:layout_constraintBottom_toTopOf="@+id/button_save_outfit"
 		android:scrollbars="vertical"/>
 

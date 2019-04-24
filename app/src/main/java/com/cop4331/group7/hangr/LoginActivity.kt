@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
 
         button_login.isEnabled = false
         button_register.isEnabled = false
-        button_bypass.isEnabled = false
+//        button_bypass.isEnabled = false
         indeterminateBar.visibility = View.VISIBLE
 
         auth.signInWithEmailAndPassword(field_email.text.toString(), field_password.text.toString())
@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
         button_login.isEnabled = true
         button_register.isEnabled = true
-        button_bypass.isEnabled = true
+//        button_bypass.isEnabled = true
         indeterminateBar.visibility = View.INVISIBLE
     }
 

@@ -15,7 +15,9 @@ import com.cop4331.group7.hangr.constants.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import hideKeyboard
 import kotlinx.android.synthetic.main.activity_create_outfit.*
+import kotlinx.android.synthetic.main.activity_hampr.*
 
 class CreateOutfitActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -87,6 +89,16 @@ class CreateOutfitActivity : AppCompatActivity() {
         fab_add_to_outfit.setOnClickListener { selectClothingItem() }
         button_wear_outfit.setOnClickListener { wearOutfit() }
         button_save_outfit.setOnClickListener { saveOutfit() }
+
+        recycler_outfit.setOnClickListener {
+            container.hideKeyboard()
+            edit_outfit_name.clearFocus()
+        }
+
+        container.setOnClickListener {
+            it.hideKeyboard()
+            edit_outfit_name.clearFocus()
+        }
     }
 
     private fun setupRecyclerView() {
@@ -122,14 +134,9 @@ class CreateOutfitActivity : AppCompatActivity() {
     }
 
     private fun saveOutfit() {
-        val name = openNameDialog()
+        val name = edit_outfit_name.text.toString()
         val isFavorite = false
         saveOutfitToFirebase(name, isFavorite)
-    }
-
-    private fun openNameDialog(): String {
-
-        return "Casual Friday"
     }
 
     private fun saveOutfitToFirebase(outfitName: String, isFavorite: Boolean) {
