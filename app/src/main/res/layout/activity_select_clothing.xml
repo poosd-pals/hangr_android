@@ -14,7 +14,7 @@
 		android:layout_marginEnd="24dp"
 		android:layout_marginStart="24dp"
 		app:layout_constraintTop_toTopOf="parent"
-		app:smsp_hint="@string/filter_prompt" />
+		app:smsp_hint="@string/filter_prompt"/>
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler_select_clothing"

@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.Toast
 import com.cop4331.group7.hangr.classes.AssembleOutfitAdapter
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
@@ -21,6 +23,7 @@ class CreateOutfitActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var clothingRef: CollectionReference
+    private lateinit var outfitData: FirebaseOutfitItem
 
     private var viewAdapter: AssembleOutfitAdapter? = null
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -32,21 +35,64 @@ class CreateOutfitActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_outfit)
 
+        initFirebase()
+        setState()
+        setupRecyclerView()
+    }
+
+    private fun initFirebase() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         clothingRef = db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(CLOTHING_DB_STRING)
-        title = "Assemble an Outfit!"
+    }
+
+    private fun setState() {
+        // TODO: pull in exisiting clothing data when editing outfit
+        if (intent.hasExtra(EXISTING_OUTFIT_ITEM_DATA)) {
+            title = "Edit Outfit"
+
+            outfitData = intent.extras?.getParcelable(EXISTING_OUTFIT_ITEM_DATA)!!
+            var str = ""
+            val size = outfitData.clothingItems.size - 1
+
+            Toast.makeText(this, "" + outfitData.clothingItems.size + " items in outfit", Toast.LENGTH_LONG).show()
+
+            // for each clothing item in the outfit, make a FirebaseCLothingItem and add to list
+            for (i in 0..size) {
+                Log.d("CreateOutfitActivity", "pulling from DB")
+                clothingRef.document(outfitData.clothingItems[i]).get().addOnCompleteListener {
+                    val res = it.result!!
+                    val item = FirebaseClothingItem(
+                        res["name"].toString(),
+                        res["category"].toString(),
+                        (res["wearsTotal"] as Long).toInt(),
+                        (res["wearsLeft"] as Long).toInt(),
+                        res["colors"] as List<String>,
+                        res["tags"] as List<String>,
+                        res["imageUrl"].toString(),
+                        res["imageFilename"].toString()
+                    )
+                    str += res.toString()
+                    clothingReferences.add(item)
+                }
+            }
+            if (str == "")
+                Toast.makeText(this, "empty str", Toast.LENGTH_LONG).show()
+            else
+                Toast.makeText(this, str, Toast.LENGTH_LONG).show()
+        } else {
+            title = "Assemble an Outfit"
+        }
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         fab_add_to_outfit.setOnClickListener { selectClothingItem() }
         button_wear_outfit.setOnClickListener { wearOutfit() }
         button_save_outfit.setOnClickListener { saveOutfit() }
-
-        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
-        viewManager = LinearLayoutManager(this@CreateOutfitActivity)
+        viewManager = GridLayoutManager(this@CreateOutfitActivity, 2)
         viewAdapter = AssembleOutfitAdapter(this, clothingReferences)
 
         recycler_outfit.apply {
@@ -113,10 +159,7 @@ class CreateOutfitActivity : AppCompatActivity() {
                     val clothingKey = data.extras?.getString(EXISTING_CLOTHING_ITEM_PARENT_ID)!!
                     clothingKeys.add(clothingKey)
 
-                    Toast.makeText(this, "Item name: " + clothing?.name + ". Outfit size: " + clothingReferences.size, Toast.LENGTH_LONG).show()
                     updateRecycler()
-                } else {
-                    Toast.makeText(this, "putExtra failed", Toast.LENGTH_LONG).show()
                 }
             }
         }

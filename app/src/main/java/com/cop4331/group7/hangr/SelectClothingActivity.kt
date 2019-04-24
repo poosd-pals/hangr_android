@@ -51,10 +51,7 @@ class SelectClothingActivity : AppCompatActivity() {
         categories.addAll(CATEGORIES)
         categories.add(0, "All")
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinner_outfit.adapter = adapter
+        spinner_outfit.adapter = ArrayAdapter<String>(this, R.layout.spinner_inflator, CATEGORIES)
 
         spinner_outfit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}

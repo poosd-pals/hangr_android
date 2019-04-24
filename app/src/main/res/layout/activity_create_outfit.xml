@@ -15,36 +15,26 @@
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"/>
 
-	<LinearLayout
-		android:id="@+id/layout_outfit_container"
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recycler_outfit"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
+		android:layout_height="0dp"
+		android:layout_marginBottom="16dp"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintBottom_toTopOf="@id/button_save_outfit">
+		app:layout_constraintBottom_toTopOf="@+id/button_save_outfit"
+		android:scrollbars="vertical"/>
 
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<android.support.v7.widget.RecyclerView
-				android:id="@+id/recycler_outfit"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="16dp"/>
-
-		</ScrollView>
-
-		<android.support.design.widget.FloatingActionButton
-			android:id="@+id/fab_add_to_outfit"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:clickable="true"
-			android:focusable="true"
-			app:srcCompat="@drawable/ic_add_white_24dp"/>
-
-	</LinearLayout>
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fab_add_to_outfit"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toTopOf="@id/button_save_outfit"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_gravity="center"
+		android:clickable="true"
+		android:focusable="true"
+		app:srcCompat="@drawable/ic_add_white_24dp"/>
 
 
 	<Button
@@ -55,7 +45,9 @@
 		android:layout_marginBottom="16dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		android:text="Save"/>
+		android:text="@string/save"
+		android:fontFamily="@font/karla"
+		android:textStyle="bold"/>
 
 	<Button
 		android:id="@+id/button_wear_outfit"
@@ -65,6 +57,8 @@
 		android:layout_marginBottom="16dp"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		android:text="Wear"/>
+		android:text="@string/wear"
+		android:fontFamily="@font/karla"
+		android:textStyle="bold"/>
 
 </android.support.constraint.ConstraintLayout>

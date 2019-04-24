@@ -21,6 +21,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/welcome"
+            android:fontFamily="@font/karla"
             android:textSize="30sp"
             android:textColor="#333333"/>
 
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="@string/prompt_email"
+                android:fontFamily="@font/karla"
                 tools:ignore="Autofill"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -59,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="@string/password"
+                android:fontFamily="@font/karla"
                 tools:ignore="Autofill"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -68,24 +71,34 @@
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/log_in"/>
+            android:text="@string/log_in"
+            android:fontFamily="@font/karla"
+            android:textStyle="bold"/>
+
         <Button
-            android:text="@string/don_t_have_an_account"
+            android:id="@+id/button_register"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/button_register"/>
+            android:layout_height="wrap_content"
+            android:text="@string/don_t_have_an_account"
+            android:fontFamily="@font/karla"
+            android:textStyle="bold"/>
 
 			  <!-- TODO: Temporary to bypass login screen -->
         <Button
             android:id="@+id/button_bypass"
-            android:text="@string/bypass_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/bypass_login"
+            android:fontFamily="@font/karla"
+            android:textStyle="bold"/>
+
         <ProgressBar
             android:id="@+id/indeterminateBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:indeterminateBehavior="cycle" android:visibility="invisible"/>
+            android:indeterminateBehavior="cycle"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

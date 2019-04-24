@@ -55,10 +55,7 @@ class ClothingFragment: Fragment() {
         categories.addAll(CATEGORIES)
         categories.add(0, "All")
 
-        val adapter = ArrayAdapter(mView.context, android.R.layout.simple_spinner_item, categories)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        mView.spinner_filter.adapter = adapter
+        mView.spinner_filter.adapter = ArrayAdapter<String>(this.context, R.layout.spinner_inflator, CATEGORIES)
 
         mView.spinner_filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
