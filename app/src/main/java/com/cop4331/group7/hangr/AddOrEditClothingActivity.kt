@@ -38,8 +38,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private lateinit var clothesRef: CollectionReference
     private lateinit var storage: StorageReference
 
-    private var isEditingClothingItem = false
-    private var previousImageStorageFilename: String? = null
+    private var previousClothingItem: FirebaseClothingItem? = null
+    private var hasChangedImage = false
     private var currentImageUri: Uri? = null
     private var currentImageStorageFilename: String? = null
     private var category: String? = null
@@ -98,8 +98,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
     private fun setActivityStateEditOrNew() {
         if (intent.hasExtra(EXISTING_CLOTHING_ITEM_DATA)) {
             // editing item
-            isEditingClothingItem = true
             val existingClothingItem = intent.extras?.getParcelable(EXISTING_CLOTHING_ITEM_DATA) as FirebaseClothingItem
+            this.previousClothingItem = existingClothingItem
 
             // loads existing image or default image
             if (existingClothingItem.imageUrl.isNotBlank()) {
@@ -125,12 +125,8 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
             nacho_colors.setText(existingClothingItem.colors)
             nacho_tags.setText(existingClothingItem.tags)
-
-            previousImageStorageFilename = existingClothingItem.imageFilename
         } else {
             // existing item
-            isEditingClothingItem = false
-
             button_delete.isClickable = false
             button_delete.visibility = View.INVISIBLE
         }
@@ -155,7 +151,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         setFormUiEnabled(false)
         if (!intent.hasExtra(EXISTING_CLOTHING_ITEM_PARENT_ID))
             Toast.makeText(this, "Cannot find item to delete!", Toast.LENGTH_LONG).show()
-        else if (!previousImageStorageFilename.isNullOrBlank())
+        else if (!previousClothingItem!!.imageFilename.isBlank())
             removeImageAndItemFromStorage()
         else
             removeCurrentItemFromFirebase()
@@ -177,7 +173,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
 
     // removes image from storage then calls helper to remove rest of object
     private fun removeImageAndItemFromStorage() {
-        val imageRef = storage.child(currentUser.uid).child(previousImageStorageFilename!!)
+        val imageRef = storage.child(currentUser.uid).child(previousClothingItem!!.imageFilename)
         imageRef.delete().addOnCompleteListener {
             if (it.isSuccessful) { removeCurrentItemFromFirebase() }
             else { handleFailure(it.exception) }
@@ -231,6 +227,7 @@ class AddOrEditClothingActivity : AppCompatActivity() {
                     .into(image_editing_clothing)
 
                 currentImageUri = Uri.fromFile(image)
+                hasChangedImage = true
             }
 
             override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
@@ -274,7 +271,10 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         progress_horizontal.visibility = View.INVISIBLE
         text_progress.visibility = View.INVISIBLE
         Toast.makeText(this, "Image uploaded to firebase storage!", Toast.LENGTH_SHORT).show()
-        saveClothingItem(uri)
+        if (previousClothingItem != null)
+            updateClothingItem(uri)
+        else
+            saveClothingItem(uri)
     }
 
     private fun handleFailure(exception: Exception?) {
@@ -285,10 +285,48 @@ class AddOrEditClothingActivity : AppCompatActivity() {
         // TODO: check for whole form being complete before uploading proceeding
         setFormUiEnabled(false)
         progress_circular.visibility = View.VISIBLE
-        if (currentImageUri != null)
-            uploadCurrentImageToUserStorage()
-        else
-            saveClothingItem()
+
+        if (previousClothingItem != null ) {
+            if (hasChangedImage) {
+                storage.child(currentUser.uid).child(previousClothingItem!!.imageFilename).delete()
+                uploadCurrentImageToUserStorage()
+            }
+
+            else {
+                updateClothingItem()
+            }
+        }
+        else {
+            if (currentImageUri != null)
+                uploadCurrentImageToUserStorage()
+            else
+                saveClothingItem()
+        }
+    }
+
+    private fun updateClothingItem(uri: Uri? = null) {
+        val wearsString = edit_clothing_wears.text.toString()
+        val wearsInt = if (wearsString.isBlank()) -1 else wearsString.toInt()
+
+        val colors = mutableListOf<String>()
+        nacho_colors.allChips.forEach { colors.add(it.text.toString()) }
+        val tags = mutableListOf<String>()
+        nacho_tags.allChips.forEach { tags.add(it.text.toString()) }
+
+        // TODO: add colors / tags to database entry for current user, implement autofill suggestions in the Nachos (???)
+        val id = intent.getStringExtra(EXISTING_CLOTHING_ITEM_PARENT_ID)
+        with(db.collection(HANGR_DB_STRING).document(currentUser.uid).collection(CLOTHING_DB_STRING).document(id)) {
+            update(mapOf(
+                "name" to edit_clothing_name.text.toString(),
+                "category" to (category ?: ""),
+                "wearsTotal" to wearsInt,
+                "wearsLeft" to wearsInt,
+                "colors" to colors,
+                "tags" to tags,
+                "imageUrl" to (uri?.toString() ?: previousClothingItem!!.imageUrl),
+                "imageFilename" to (currentImageStorageFilename ?: previousClothingItem!!.imageFilename)
+                )).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception) }
+        }
     }
 
     // creates clothing object and stores it in database
