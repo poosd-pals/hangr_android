@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.AddOrEditClothingActivity
-import com.cop4331.group7.hangr.ClosetGalleryActivity
 import com.cop4331.group7.hangr.R
 import com.cop4331.group7.hangr.R.layout
 import com.cop4331.group7.hangr.SelectClothingActivity
@@ -34,7 +33,13 @@ class GalleryAdapter(private val mActivity: Activity, options: FirestoreRecycler
                      private val assemblingOutfit: Boolean):
     FirestoreRecyclerAdapter<FirebaseClothingItem, ClothingGalleryHolder>(options) {
 
+    // keeps track of all the clothing keys used to populate the recycler
+    var clothingKeys: MutableList<String> = mutableListOf()
+
     override fun onBindViewHolder(holder: ClothingGalleryHolder, position: Int, model: FirebaseClothingItem) {
+        // collect keys of all things in adapter
+        clothingKeys.add(snapshots.getSnapshot(holder.adapterPosition).id)
+
         if (model.imageUrl.isNotBlank()) {
             Glide
                 .with(holder.imageView.context)

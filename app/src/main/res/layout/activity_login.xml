@@ -84,13 +84,13 @@
             android:textStyle="bold"/>
 
 			  <!-- TODO: Temporary to bypass login screen -->
-        <Button
-            android:id="@+id/button_bypass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bypass_login"
-            android:fontFamily="@font/karla"
-            android:textStyle="bold"/>
+        <!--<Button-->
+            <!--android:id="@+id/button_bypass"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/bypass_login"-->
+            <!--android:fontFamily="@font/karla"-->
+            <!--android:textStyle="bold"/>-->
 
         <ProgressBar
             android:id="@+id/indeterminateBar"

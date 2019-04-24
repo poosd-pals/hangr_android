@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.cop4331.group7.hangr.AddOrEditClothingActivity
 import com.cop4331.group7.hangr.CreateOutfitActivity
 import com.cop4331.group7.hangr.R
 import com.cop4331.group7.hangr.constants.*

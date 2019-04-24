@@ -1,6 +1,5 @@
 package com.cop4331.group7.hangr
 
-import android.app.Activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
@@ -8,13 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.cop4331.group7.hangr.classes.FirebaseClothingItem
-import com.cop4331.group7.hangr.classes.FirebaseClothingItemQueryBuilder
 import com.cop4331.group7.hangr.classes.GalleryAdapter
 import com.cop4331.group7.hangr.constants.CATEGORIES
 import com.cop4331.group7.hangr.constants.CLOTHING_DB_STRING
-import com.cop4331.group7.hangr.constants.DESIRED_CATEGORY
 import com.cop4331.group7.hangr.constants.HANGR_DB_STRING
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -22,8 +18,6 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_select_clothing.*
-import kotlinx.android.synthetic.main.fragment_clothing.view.*
-import kotlinx.android.synthetic.main.fragment_outfits.*
 
 // display clothing items for user to add to outfit
 class SelectClothingActivity : AppCompatActivity() {
@@ -33,9 +27,6 @@ class SelectClothingActivity : AppCompatActivity() {
 
     private lateinit var viewAdapter: GalleryAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private var outfit = mutableListOf<FirebaseClothingItem?>()
-    private var category: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +49,12 @@ class SelectClothingActivity : AppCompatActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val category = parent!!.adapter.getItem(position)
-                var query: Query
-                if (position == 0)
-                    query = clothesRef
+                val query: Query
+
+                query = if (position == 0)
+                    clothesRef
                 else
-                    query = clothesRef.whereEqualTo("category", category)
+                    clothesRef.whereEqualTo("category", category)
 
                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
                     .setQuery(query, FirebaseClothingItem::class.java)

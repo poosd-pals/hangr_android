@@ -32,17 +32,16 @@ class LoginActivity : AppCompatActivity() {
         button_login.setOnClickListener { attemptLogin() }
         button_register.setOnClickListener { moveToRegisterActivity() }
 
-        // MARK: Temporary to bypass login screen
-        button_bypass.setOnClickListener { loginToDummyAccount() }
+//        button_bypass.setOnClickListener { loginToDummyAccount() }
     }
 
-    private fun loginToDummyAccount() {
-        auth.signInWithEmailAndPassword("admin@admin.com", "password1")
-            .addOnCompleteListener {
-                if (it.isSuccessful) { moveToClosetGallery() }
-                else { handleLoginFailure(it) }
-            }
-    }
+//    private fun loginToDummyAccount() {
+//        auth.signInWithEmailAndPassword("admin@admin.com", "password1")
+//            .addOnCompleteListener {
+//                if (it.isSuccessful) { moveToClosetGallery() }
+//                else { handleLoginFailure(it) }
+//            }
+//    }
 
     private fun attemptLogin() {
         button_login.rootView.hideKeyboard()

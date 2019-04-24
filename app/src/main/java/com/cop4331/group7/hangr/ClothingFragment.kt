@@ -1,6 +1,7 @@
 package com.cop4331.group7.hangr
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -55,7 +56,7 @@ class ClothingFragment: Fragment() {
         categories.addAll(CATEGORIES)
         categories.add(0, "All")
 
-        mView.spinner_filter.adapter = ArrayAdapter<String>(this.context, R.layout.spinner_inflator, CATEGORIES)
+        mView.spinner_filter.adapter = ArrayAdapter<String>(this.context as Context, R.layout.spinner_inflator, CATEGORIES)
 
         mView.spinner_filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -63,10 +64,10 @@ class ClothingFragment: Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val category = parent!!.adapter.getItem(position)
                 val query: Query
-                if (position == 0)
-                    query = baseQuery
+                query = if (position == 0)
+                    baseQuery
                 else
-                    query = baseQuery.whereEqualTo("category", category)
+                    baseQuery.whereEqualTo("category", category)
 
                 val response = FirestoreRecyclerOptions.Builder<FirebaseClothingItem>()
                     .setQuery(query, FirebaseClothingItem::class.java)

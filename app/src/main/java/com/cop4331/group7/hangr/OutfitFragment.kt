@@ -4,14 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.cop4331.group7.hangr.classes.AssembleOutfitAdapter
-import com.cop4331.group7.hangr.classes.FirebaseClothingItem
 import com.cop4331.group7.hangr.classes.FirebaseOutfitItem
 import com.cop4331.group7.hangr.classes.OutfitsAdapter
 import com.cop4331.group7.hangr.constants.HANGR_DB_STRING
@@ -19,7 +15,6 @@ import com.cop4331.group7.hangr.constants.OUTFITS_DB_STRING
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_outfits.*
 import kotlinx.android.synthetic.main.fragment_outfits.view.*
 
 // TODO: displays user's saved outfits (filter by favorites??)

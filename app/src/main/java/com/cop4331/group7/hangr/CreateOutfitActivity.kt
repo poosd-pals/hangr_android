@@ -3,10 +3,8 @@ package com.cop4331.group7.hangr
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
@@ -47,7 +45,7 @@ class CreateOutfitActivity : AppCompatActivity() {
     }
 
     private fun setState() {
-        // TODO: pull in exisiting clothing data when editing outfit
+        // TODO: pull in existing clothing data when editing outfit
         if (intent.hasExtra(EXISTING_OUTFIT_ITEM_DATA)) {
             title = "Edit Outfit"
 
@@ -142,11 +140,11 @@ class CreateOutfitActivity : AppCompatActivity() {
         )
 
         with(db.collection(HANGR_DB_STRING).document(auth.currentUser!!.uid).collection(OUTFITS_DB_STRING)) {
-            add(outfitItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure(it.exception) }
+            add(outfitItem).addOnCompleteListener { if (it.isSuccessful) finish() else handleFailure() }
         }
     }
 
-    private fun handleFailure(e: Exception?) {
+    private fun handleFailure() {
         Toast.makeText(this, "Better luck next time, bud!", Toast.LENGTH_LONG).show()
     }
 

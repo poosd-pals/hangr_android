@@ -2,7 +2,6 @@ package com.cop4331.group7.hangr
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater

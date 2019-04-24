@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.cop4331.group7.hangr.R
 import kotlinx.android.synthetic.main.outfit_clothing_view.view.*
@@ -18,15 +16,22 @@ class AssembleOutfitAdapter(private val context: Context, private val outfit: Mu
     override fun onBindViewHolder(holder: OutfitClothingHolder, position: Int) {
         val clothingItem = outfit[position]
 
-        Glide.with(context)
-            .load(clothingItem.imageUrl)
-            .into(holder.imageView)
+        // load image or placeholder into imageView
+        if (clothingItem.imageUrl.isNotBlank()) {
+            Glide
+                .with(holder.imageView.context)
+                .load(clothingItem.imageUrl)
+                .centerCrop()
+                .placeholder(CreateCircularDrawable.make(holder.imageView.context))
+                .into(holder.imageView)
+        } else {
+            Glide.with(holder.imageView.context)
+                .load(R.drawable.image_placeholder)
+                .into(holder.imageView)
+        }
+
 
         holder.name.text = clothingItem.name
-
-        holder.parentLayout.setOnClickListener {
-            Toast.makeText(context, clothingItem.name, Toast.LENGTH_LONG).show()
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OutfitClothingHolder {
@@ -43,6 +48,5 @@ class AssembleOutfitAdapter(private val context: Context, private val outfit: Mu
     class OutfitClothingHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.text_outfit_name
         val imageView: ImageView = itemView.image_clothing_in_outfit
-        val parentLayout: LinearLayout = itemView.layout_outfit_item
     }
 }

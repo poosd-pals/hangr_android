@@ -29,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         button_login.setOnClickListener { moveToLoginActivity() }
 
         // submit form when enter is pressed on the soft keyboard in the last textfield
-        field_password.setOnEditorActionListener { view, code, event ->
+        field_password.setOnEditorActionListener { _, code, _ ->
             if (code == KeyEvent.KEYCODE_ENTER || code == EditorInfo.IME_ACTION_DONE) { validateFields() }
             true
         }
