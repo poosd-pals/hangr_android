@@ -1,7 +1,7 @@
 package com.cop4331.group7.hangr
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -42,8 +42,9 @@ class SelectClothingActivity : AppCompatActivity() {
         categories.addAll(CATEGORIES)
         categories.add(0, "All")
 
-        spinner_outfit.adapter = ArrayAdapter<String>(this, R.layout.spinner_inflator, CATEGORIES)
-
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        aa.setDropDownViewResource(R.layout.spinner_inflator)
+        spinner_outfit.adapter = aa
         spinner_outfit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
